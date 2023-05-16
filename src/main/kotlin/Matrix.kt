@@ -4,38 +4,24 @@ data class MatrixError(val errorName: String, val hasError: Boolean, val display
     }
 }
 
-class Matrix(matrix1D: List<Number>, rows: Int, cols: Int) {
+class Matrix<T: Number>(matrix1D: List<T>, rows: Int, cols: Int) {
     private val matrixSizeError =
         MatrixError("Matrix Size Error", false, "The size of the matrix, doesn't match the rows and columns")
 
-
-    //    fun map1DTo2D(array1D: IntArray, rows: Int, columns: Int): Array<Array<Int>> {
-//        val array2D = Array(rows) { Array(columns) { 0 } }
-//
-//        for (i in 0 until rows) {
-//            for (j in 0 until columns) {
-//                array2D[i][j] = array1D[i * columns + j]
-//            }
-//        }
-//
-//        return array2D
-//    }
-
     //Create a 2D array that `rows` rows and `cols` columns and fill each cell with 0;
-    val matrix2D = Array(rows) { Array(cols) { 0 } }
+    val matrix2D = Array(rows) { Array<Number>(cols) { 0 } }
 
     init {
         //Check if the size of the matrix values is in accordance with the given rows and cols value;
         if (rows * cols != matrix1D.size) {
             matrixSizeError.throwError()
         }
-
-//        for (i in 1..rows) {
-//            val row = mutableListOf<Number>()
-//            for (j in 1..cols) {
-//                row.add(values[i * j])
-//            }
-//        }
+        //Packs the 1D matrix with the `rows` and `cols` information into a 2D matrix.
+        for (i in 0 until rows) {
+            for (j in 0 until cols) {
+                matrix2D[i][j] = matrix1D[i * cols + j]
+            }
+        }
     }
 
     //A formatted matrix string;
