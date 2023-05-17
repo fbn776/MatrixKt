@@ -7,8 +7,12 @@ fun main() {
     val m1 = Matrix(values1, 3, 3)
     val m2 = Matrix(values2, 3, 3)
 
+    val x = m1[2, 1]
+    println()
+//    println(fl::class.java.simpleName)
+//    println(x::class.java.simpleName)
 
-    //println(m1 add m2)
-    print(m1)
+//    //println(m1 add m2)
+//    print(m1)
 
 }
