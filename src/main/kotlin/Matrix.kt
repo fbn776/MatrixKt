@@ -34,6 +34,8 @@ data class Matrix1D<T>(val matrix: List<T>, val rows: Int, val cols: Int)
 
 @Suppress("UNCHECKED_CAST")
 class Matrix<T : Number>(private val matrix1D: List<T>, val rows: Int, val cols: Int) {
+
+
     /**Creates a 2D array that `rows` rows and `cols` columns and fill each cell with 0;*/
     private val matrix2D = Array(rows) { Array(cols) { 0 as Number } }
 
@@ -73,14 +75,24 @@ class Matrix<T : Number>(private val matrix1D: List<T>, val rows: Int, val cols:
     /**Returns the 2D matrix*/
     fun matrix() = matrix2D
 
+    /**Returns the matrix size**/
+    fun size() = rows * cols
 
     /*--------Operators methods--------*/
     operator fun <E : Number> plus(other: Matrix<E>) {
+        for(i in 1..size()) {
 
+        }
     }
 
 
     /*--------Utils methods--------*/
+    /**
+     * Converts the index of a 1D list to a 2D list (i,j)
+     * @param index the index from the 1D list
+     */
+    private fun convertIndexTo2D(index: Int) = (index / cols) to (index % cols)
+
     /**
      * Returns the formatted matrix;
      */

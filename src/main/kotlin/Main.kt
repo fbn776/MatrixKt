@@ -1,6 +1,6 @@
 
 fun main() {
-    val values1 = listOf(1, 2, 3, 4, 5, 6, 7, -10f, 9)
+    val values1 = listOf(1, 2, 3, 4, 5, 6, 7, -10, 9)
     val values2 = listOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
 
 
