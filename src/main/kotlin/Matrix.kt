@@ -19,9 +19,9 @@ private sealed class Error {
 }
 
 
-class Matrix<T: Number>(val matrix1D: List<T>, rows: Int, cols: Int) {
+class Matrix<T: Number>(private val matrix1D: List<T>, rows: Int, cols: Int) {
     /**Creates a 2D array that `rows` rows and `cols` columns and fill each cell with 0;*/
-    val matrix2D = Array(rows) { Array(cols) { 0 as Number} }
+    private val matrix2D = Array(rows) { Array(cols) { 0 as Number} }
 
     init {
         //Check if the size of the matrix values is in accordance with the given rows and cols value;
@@ -45,6 +45,20 @@ class Matrix<T: Number>(val matrix1D: List<T>, rows: Int, cols: Int) {
     operator fun get(i: Int, j: Int) = matrix2D[i][j]
 
     /**
+     * Set a value specifc value of the matrix at (i, j) and returns the new value;
+     * @param i the i-th position
+     * @param j the j-th position
+     * @param newValue the set value
+     */
+    operator fun set(i: Int, j: Int, newValue: T): T {
+        matrix2D[i][j] = newValue
+        return newValue
+    }
+    operator fun <E: Number> plus(other: Matrix<E>) {
+
+    }
+
+    /**
      * Returns the formatted matrix;
      */
     override fun toString(): String {
@@ -60,4 +74,7 @@ class Matrix<T: Number>(val matrix1D: List<T>, rows: Int, cols: Int) {
     }
 
     /**Private functions**/
+    private fun updateValues() {
+
+    }
 }
