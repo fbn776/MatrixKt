@@ -1,20 +1,32 @@
-data class MatrixError(val errorName: String, val hasError: Boolean, val displayText: String) {
+/**
+ * An Error class that represents an error.
+ * @param errorName The name of the error
+ * @param displayText The text to be displayed when the error is thrown.
+ */
+private open class MatrixError(val errorName: String, val displayText: String) {
     fun throwError() {
         throw Error(displayText)
     }
+    init {
+        throwError()
+    }
 }
 
-class Matrix<T: Number>(val matrix1D: List<T>, rows: Int, cols: Int) {
-    private val matrixSizeError =
-        MatrixError("Matrix Size Error", false, "The size of the matrix, doesn't match the rows and columns")
+/**An error container class that contains all the Errors the libarey can throw out.*/
+private sealed class Error {
+    class MatrixSizeError: MatrixError("Matrix Size Error", "The size of the matrix, doesn't match the rows and columns")
 
-    //Create a 2D array that `rows` rows and `cols` columns and fill each cell with 0;
+}
+
+
+class Matrix<T: Number>(val matrix1D: List<T>, rows: Int, cols: Int) {
+    /**Creates a 2D array that `rows` rows and `cols` columns and fill each cell with 0;*/
     val matrix2D = Array(rows) { Array(cols) { 0 as Number} }
 
     init {
         //Check if the size of the matrix values is in accordance with the given rows and cols value;
         if (rows * cols != matrix1D.size) {
-            matrixSizeError.throwError()
+            Error.MatrixSizeError()
         }
         //Packs the 1D matrix with the `rows` and `cols` information into a 2D matrix.
         for (i in 0 until rows) {
@@ -24,20 +36,17 @@ class Matrix<T: Number>(val matrix1D: List<T>, rows: Int, cols: Int) {
         }
     }
 
-    infix fun <E: Number> add(other: Matrix<E>) {
-        this.matrix2D.forEachIndexed {i, row ->
-            row.forEachIndexed { j, cell ->
-                var x = this.matrix2D[i][j]
-            }
-        }
-    }
-    companion object {
-    }
 
-
-
+    /**
+     * Getter function for accessing matrix by [i, j] format
+     * @param i This denotes the i-th row of the matrix
+     * @param j This denotes the j-th column of the matrix
+     */
     operator fun get(i: Int, j: Int) = matrix2D[i][j]
-    //A formatted matrix string;
+
+    /**
+     * Returns the formatted matrix;
+     */
     override fun toString(): String {
         var str = ""
         for(i in matrix2D) {
@@ -49,4 +58,6 @@ class Matrix<T: Number>(val matrix1D: List<T>, rows: Int, cols: Int) {
         }
         return str
     }
+
+    /**Private functions**/
 }
