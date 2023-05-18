@@ -1,7 +1,7 @@
 import kotlin.Error
 
 fun main() {
-    val values1 = arrayOf(1, 2, 3, 4, 5, 6, 7, -10, 9, 10)
+    val values1 = arrayOf(1, 2, 3, 4, 5, 6, 7, -10, 9)
     val values2 = arrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
     val values3 = arrayOf("hi", "hello")
 

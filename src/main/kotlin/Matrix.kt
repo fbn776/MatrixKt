@@ -1,4 +1,3 @@
-
 /**
  * A data class that contains a 1D matrix and its size information.
  * This is used to represent matrix as 1D list (The Matrix class treats a `matrix` as 2D array and does calculations with it)
@@ -7,9 +6,14 @@
  * @param cols Nof of cols
  */
 data class Matrix1D<T>(val matrix: Array<T>, val rows: Int, val cols: Int)
+
 /**An error container class that contains all the Errors the library can throw out.*/
 private sealed class Error {
-    class MatrixSizeError(msg: String = "The size of the matrix does not match the row and column count."): Exception(msg)
+    class MatrixSizeError(msg: String = "The size of the matrix does not match the row and column count.") :
+        Exception(msg)
+
+    class MatrixIndexOutOfBound(msg: String = "Tried to access a value with index [i, j] that's outside of the index bounds") :
+        Exception(msg)
 }
 
 /**
@@ -20,7 +24,7 @@ private sealed class Error {
  * @param rows The number of rows of the matrix.
  * @param cols The number of columns of the matrix
  */
-class Matrix<T: Number>(private val m: Array<T>, val rows: Int, val cols: Int) {
+class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) {
     /**This is the main matrix array. Operations are done on this array.
      * This is a copy of the passed array as when changing the non-copied array [m] can change the original array that passed as an argument
      */
@@ -39,7 +43,12 @@ class Matrix<T: Number>(private val m: Array<T>, val rows: Int, val cols: Int) {
      * @param i This denotes the i-th row of the matrix
      * @param j This denotes the j-th column of the matrix
      */
-    operator fun get(i: Int, j: Int) = matrix1D[convert2dToIndex(i, j)]
+    operator fun get(i: Int, j: Int): T {
+        if ((i < 0) || (i > rows - 1) || (j < 0) || (j > cols - 1))
+            throw Error.MatrixIndexOutOfBound()
+
+        return matrix1D[convert2dToIndex(i, j)]
+    }
 
     /**
      * Set a value specific value of the matrix at (i, j) and returns the new value;
@@ -48,7 +57,10 @@ class Matrix<T: Number>(private val m: Array<T>, val rows: Int, val cols: Int) {
      * @param newValue the set value
      */
     operator fun set(i: Int, j: Int, newValue: T): T {
-        matrix1D[convert2dToIndex(i,j)] = newValue
+        if ((i < 0) || (i > rows - 1) || (j < 0) || (j > cols - 1))
+            throw Error.MatrixIndexOutOfBound()
+
+        matrix1D[convert2dToIndex(i, j)] = newValue
         return newValue
     }
 
@@ -59,9 +71,10 @@ class Matrix<T: Number>(private val m: Array<T>, val rows: Int, val cols: Int) {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
         other as Matrix<*>
-        if(this.size != other.size) return false
+        if (this.size != other.size) return false
         return matrix1D.contentEquals(other.matrix1D)
     }
+
     /**Returns the matrix size**/
     val size = rows * cols
     /*--------Operators methods--------*/
