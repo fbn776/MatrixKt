@@ -1,18 +1,18 @@
+import kotlin.Error
 
 fun main() {
-    val values1 = listOf(1, 2, 3, 4, 5, 6, 7, -10, 9)
-    val values2 = listOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
-
+    val values1 = arrayOf(1, 2, 3, 4, 5, 6, 7, -10, 9)
+    val values2 = arrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
+    val values3 = arrayOf("hi", "hello")
 
     val m1 = Matrix(values1, 3, 3)
     val m2 = Matrix(values2, 3, 3)
 
-    val x = m1[2, 1]
-    println()
-//    println(fl::class.java.simpleName)
-//    println(x::class.java.simpleName)
+    val x = m1[1,1]
+    val y = m1.matrix1D
 
-//    //println(m1 add m2)
-//    print(m1)
+
+    println(m1 == m2)
 
 }
+

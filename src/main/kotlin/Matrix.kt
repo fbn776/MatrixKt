@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 /**
  * An Error class that represents an error.
  * @param errorName The name of the error
@@ -7,7 +9,6 @@ private open class MatrixError(val errorName: String, val displayText: String) {
     fun throwError() {
         throw Error(displayText)
     }
-
     init {
         throwError()
     }
@@ -30,12 +31,17 @@ private sealed class Error {
  * @param rows No of rows
  * @param cols Nof of cols
  */
-data class Matrix1D<T>(val matrix: List<T>, val rows: Int, val cols: Int)
+data class Matrix1D<T>(val matrix: Array<T>, val rows: Int, val cols: Int)
 
-@Suppress("UNCHECKED_CAST")
-class Matrix<T : Number>(private val matrix1D: List<T>, val rows: Int, val cols: Int) {
-
-
+/**
+ * Matrix representation class that coronations/represents a single matrix.
+ * This class holds the properties of the matrix such and no of rows, columns, size etc
+ * This also holds different operation methods and other matrix methods
+ * @param matrix1D A 1D [Array] of type uniform [Number] (Non-uniform numbers raise an error)
+ * @param rows The number of rows of the matrix.
+ * @param cols The number of columns of the matrix
+ */
+class Matrix<T: Number>(val matrix1D: Array<T>, val rows: Int, val cols: Int) {
     /**Creates a 2D array that `rows` rows and `cols` columns and fill each cell with 0;*/
     private val matrix2D = Array(rows) { Array(cols) { 0 as Number } }
 
@@ -47,13 +53,12 @@ class Matrix<T : Number>(private val matrix1D: List<T>, val rows: Int, val cols:
         //Packs the 1D matrix with the `rows` and `cols` information into a 2D matrix.
         for (i in 0 until rows) {
             for (j in 0 until cols) {
-                matrix2D[i][j] = matrix1D[i * cols + j]
+                matrix2D[i][j] = matrix1D[i * cols + j] as T
             }
         }
     }
 
-    /*--------General methods--------*/
-
+    /*--------General methods/properties--------*/
     /**
      * Getter function for accessing matrix by [i, j] format
      * @param i This denotes the i-th row of the matrix
@@ -72,18 +77,20 @@ class Matrix<T : Number>(private val matrix1D: List<T>, val rows: Int, val cols:
         return newValue
     }
 
-    /**Returns the 2D matrix*/
-    fun matrix() = matrix2D
+    /**
+     * Checks if a [Matrix] and an item is equal or not.
+     */
+    override operator fun equals(other: Any?): Boolean {
+        if((other == null) || (other !is Matrix<*>) || (other.size != this.size))
+            return false
+
+        return this.matrix1D.contentEquals(other.matrix1D)
+    }
 
     /**Returns the matrix size**/
-    fun size() = rows * cols
+    val size = rows * cols
 
     /*--------Operators methods--------*/
-    operator fun <E : Number> plus(other: Matrix<E>) {
-        for(i in 1..size()) {
-
-        }
-    }
 
 
     /*--------Utils methods--------*/
@@ -108,10 +115,9 @@ class Matrix<T : Number>(private val matrix1D: List<T>, val rows: Int, val cols:
         return str
     }
 
-    /**Flattens the matrix(2D array) to a 1D matrix array**/
-    fun flatten() = Matrix1D(matrix2D.flatten(), rows, cols)
+    /**Flattens the matrix(2D array) to a 1D matrix array
+     * @return [Matrix1D] Returns the a [Matrix1D] data class that contains flattened 1D array, rows, columns.
+     **/
+    fun flatten() = Matrix1D(matrix1D, rows, cols)
 
-    private fun updateValues() {
-
-    }
 }
