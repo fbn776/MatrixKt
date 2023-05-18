@@ -80,13 +80,13 @@ class Matrix<T: Number>(val matrix1D: Array<T>, val rows: Int, val cols: Int) {
     /**
      * Checks if a [Matrix] and an item is equal or not.
      */
-    override operator fun equals(other: Any?): Boolean {
-        if((other == null) || (other !is Matrix<*>) || (other.size != this.size))
-            return false
-
-        return this.matrix1D.contentEquals(other.matrix1D)
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as Matrix<*>
+        if(this.size != other.size) return false
+        return matrix1D.contentEquals(other.matrix1D)
     }
-
     /**Returns the matrix size**/
     val size = rows * cols
 
@@ -120,4 +120,10 @@ class Matrix<T: Number>(val matrix1D: Array<T>, val rows: Int, val cols: Int) {
      **/
     fun flatten() = Matrix1D(matrix1D, rows, cols)
 
+    override fun hashCode(): Int {
+        var result = matrix1D.contentHashCode()
+        result = 31 * result + rows
+        result = 31 * result + cols
+        return result
+    }
 }
