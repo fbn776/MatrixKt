@@ -71,14 +71,23 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
         other as Matrix<*>
-        if (this.size != other.size) return false
+        if (this.rows != other.rows || this.cols != other.cols) return false
         return matrix1D.contentEquals(other.matrix1D)
     }
+
+    /**
+     * Check if two matrices are of same size.
+     * @param other the other matrix to do the check
+     * @return true if rows and cols of both matrices are equal, else false
+     */
+    fun isOfSameSize(other: Matrix<*>) = (this.rows == other.rows && this.cols == other.cols)
 
     /**Returns the matrix size**/
     val size = rows * cols
     /*--------Operators methods--------*/
+    operator fun plus(other: Matrix<*>) {
 
+    }
 
     /*--------Utils methods--------*/
     /**Returns the 1D matrix array*/
@@ -93,7 +102,6 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
                 matrix2D[i][j] = matrix1D[i * cols + j] as T
             }
         }
-
         return matrix2D
     }
 
