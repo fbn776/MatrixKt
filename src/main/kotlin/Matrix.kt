@@ -1,28 +1,3 @@
-@file:Suppress("UNCHECKED_CAST")
-
-/**
- * An Error class that represents an error.
- * @param errorName The name of the error
- * @param displayText The text to be displayed when the error is thrown.
- */
-private open class MatrixError(val errorName: String, val displayText: String) {
-    fun throwError() {
-        throw Error(displayText)
-    }
-    init {
-        throwError()
-    }
-}
-
-/**An error container class that contains all the Errors the libarey can throw out.*/
-private sealed class Error {
-    class MatrixSizeError :
-        MatrixError("Matrix Size Error", "The size of the matrix, doesn't match the rows and columns")
-
-    class UnsupportedType :
-            MatrixError("Unsupported type", "Unsupported type found")
-
-}
 
 /**
  * A data class that contains a 1D matrix and its size information.
@@ -32,29 +7,29 @@ private sealed class Error {
  * @param cols Nof of cols
  */
 data class Matrix1D<T>(val matrix: Array<T>, val rows: Int, val cols: Int)
+/**An error container class that contains all the Errors the library can throw out.*/
+private sealed class Error {
+    class MatrixSizeError(msg: String = "The size of the matrix does not match the row and column count."): Exception(msg)
+}
 
 /**
  * Matrix representation class that coronations/represents a single matrix.
- * This class holds the properties of the matrix such and no of rows, columns, size etc
+ * This class holds the properties of the matrix such and no of rows, columns, size etc.
  * This also holds different operation methods and other matrix methods
- * @param matrix1D A 1D [Array] of type uniform [Number] (Non-uniform numbers raise an error)
+ * @param m A 1D [Array] of type uniform [Number] (Non-uniform numbers raise an error)
  * @param rows The number of rows of the matrix.
  * @param cols The number of columns of the matrix
  */
-class Matrix<T: Number>(val matrix1D: Array<T>, val rows: Int, val cols: Int) {
-    /**Creates a 2D array that `rows` rows and `cols` columns and fill each cell with 0;*/
-    private val matrix2D = Array(rows) { Array(cols) { 0 as Number } }
+class Matrix<T: Number>(private val m: Array<T>, val rows: Int, val cols: Int) {
+    /**This is the main matrix array. Operations are done on this array.
+     * This is a copy of the passed array as when changing the non-copied array [m] can change the original array that passed as an argument
+     */
+    private val matrix1D = m.copyOf()
 
     init {
         //Check if the size of the matrix values is in accordance with the given rows and cols value;
         if (rows * cols != matrix1D.size) {
-            Error.MatrixSizeError()
-        }
-        //Packs the 1D matrix with the `rows` and `cols` information into a 2D matrix.
-        for (i in 0 until rows) {
-            for (j in 0 until cols) {
-                matrix2D[i][j] = matrix1D[i * cols + j] as T
-            }
+            throw Error.MatrixSizeError()
         }
     }
 
@@ -64,16 +39,16 @@ class Matrix<T: Number>(val matrix1D: Array<T>, val rows: Int, val cols: Int) {
      * @param i This denotes the i-th row of the matrix
      * @param j This denotes the j-th column of the matrix
      */
-    operator fun get(i: Int, j: Int) = matrix2D[i][j] as T
+    operator fun get(i: Int, j: Int) = matrix1D[convert2dToIndex(i, j)]
 
     /**
-     * Set a value specifc value of the matrix at (i, j) and returns the new value;
+     * Set a value specific value of the matrix at (i, j) and returns the new value;
      * @param i the i-th position
      * @param j the j-th position
      * @param newValue the set value
      */
     operator fun set(i: Int, j: Int, newValue: T): T {
-        matrix2D[i][j] = newValue
+        matrix1D[convert2dToIndex(i,j)] = newValue
         return newValue
     }
 
@@ -89,28 +64,50 @@ class Matrix<T: Number>(val matrix1D: Array<T>, val rows: Int, val cols: Int) {
     }
     /**Returns the matrix size**/
     val size = rows * cols
-
     /*--------Operators methods--------*/
 
 
     /*--------Utils methods--------*/
+    /**Returns the 1D matrix array*/
+    fun getMatrix1D() = matrix1D
+
+    /**Returns the 2D matrix array*/
+    fun getMatrix2D(): Array<Array<Number>> {
+        val matrix2D = Array(rows) { Array(cols) { 0 as Number } }
+        //Packs the 1D matrix with the `rows` and `cols` information into a 2D matrix.
+        for (i in 0 until rows) {
+            for (j in 0 until cols) {
+                matrix2D[i][j] = matrix1D[i * cols + j] as T
+            }
+        }
+
+        return matrix2D
+    }
+
     /**
      * Converts the index of a 1D list to a 2D list (i,j)
      * @param index the index from the 1D list
      */
-    private fun convertIndexTo2D(index: Int) = (index / cols) to (index % cols)
+    private fun convertIndexTo2d(index: Int) = (index / cols) to (index % cols)
+
+    /**
+     * Converts a (i,j) of a 2D array into an index of a 1D array
+     * @param i The i-th element of the outer array
+     * @param j The j-th element of the inner arrays
+     */
+    private fun convert2dToIndex(i: Int, j: Int) = i * cols + j
 
     /**
      * Returns the formatted matrix;
      */
     override fun toString(): String {
-        var str = ""
-        for (i in matrix2D) {
-            var str_temp = ""
-            for (cell in i) {
-                str_temp += "$cell "
+        var str = "\n"
+        for (i in 0 until rows) {
+            var rowStr = ""
+            for (j in 0 until cols) {
+                rowStr += "${matrix1D[i * cols + j]} "
             }
-            str += "$str_temp\n"
+            str += rowStr + '\n'
         }
         return str
     }
