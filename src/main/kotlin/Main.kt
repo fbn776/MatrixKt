@@ -7,7 +7,9 @@ fun main() {
     val m2 = Matrix(values2, 3, 4)
 
     println("matrix 1 is $m1")
-    println("matrix 2 is $m2")
+    m1.transpose()
+    println("transposed is $m1")
+
 
     val z = m1 * m2
     println("The result is $z")

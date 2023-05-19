@@ -50,11 +50,11 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
      * @param j This denotes the j-th column of the matrix
      * @return This returns the value of the matrix at (i, j) as a Double
      */
-    operator fun get(i: Int, j: Int): Double {
+    operator fun get(i: Int, j: Int): T {
         if ((i < 0) || (i > rows - 1) || (j < 0) || (j > cols - 1))
             throw MatrixError.IndexOutOfBound()
 
-        return matrix1D[convert2dToIndex(i, j)].toDouble()
+        return matrix1D[convert2dToIndex(i, j)]
     }
 
     /**
@@ -150,18 +150,31 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
             throw MatrixError.MatrixDimensionError()
 
         val c = Matrix(Array(this.rows * other.cols) { 0.0 }, this.rows, other.cols)
-
         for (i in 0 until this.rows) {
             for (j in 0 until other.cols) {
-                //val resultIndex = convert2dToIndex(i, j)
                 for (k in 0 until this.cols) {
-                    c[i, j] = c[i, j] + (this[i, k] * other[k, j])
+                    c[i, j] = c[i, j] + (this[i, k].toDouble() * other[k, j].toDouble())
                 }
             }
         }
         return c
     }
 
+    fun transpose(): Matrix<T> {
+        for (i in 0 until rows) {
+            for (j in 1 until cols) {
+                if(i == j)
+                    continue
+
+                val temp = this[i ,j]
+                //println("Before ($i,$j) = ${this[i, j]}, ($j,$i) = ${this[j, i]}")
+                this[i, j] = this[j, i]
+                this[j ,i] = temp
+                println("After ($i,$j) = ${this[i, j]}, ($j,$i) = ${this[j, i]}")
+            }
+        }
+        return this
+    }
     /*--------Utils methods--------*/
     /**Returns the 1D matrix array*/
     fun getMatrix1D() = matrix1D
