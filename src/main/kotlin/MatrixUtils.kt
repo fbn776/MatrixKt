@@ -27,6 +27,7 @@ operator fun Number.times(other: Matrix<*>): Matrix<Double> {
  * @return The new matrix with 1 row and 1 column less than the original matrix.
  * @exception MatrixError.NotSquare This error is thrown if the matrix is not a square matrix.
  * @exception MatrixError.SizeTooSmall This error is thrown if the matrix is too small to exclude a row and column.
+ * @exception MatrixError.DimensionOutOfBounds This error is thrown if the row or column to exclude is out of bounds.
  */
 inline fun <reified T : Number> Matrix<T>.subSqMatrix(rowToExclude: Int, colToExclude: Int): Matrix<T> {
     if (!this.isSquare())
