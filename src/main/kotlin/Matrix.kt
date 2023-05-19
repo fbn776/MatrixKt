@@ -17,6 +17,9 @@ sealed class MatrixError {
 
     class NotSameSizeError(msg: String = "The matrices need to be of same size. The row and column count of the matrices should be same") :
         Exception(msg)
+
+    class MatrixDimensionError(msg: String = "The number of columns in first matrix must be equal to the number of rows in second matrix for matrix multiplication.") :
+        Exception(msg)
 }
 
 /**
@@ -45,12 +48,13 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
      * Getter function for accessing matrix by [i, j] format
      * @param i This denotes the i-th row of the matrix
      * @param j This denotes the j-th column of the matrix
+     * @return This returns the value of the matrix at (i, j) as a Double
      */
-    operator fun get(i: Int, j: Int): T {
+    operator fun get(i: Int, j: Int): Double {
         if ((i < 0) || (i > rows - 1) || (j < 0) || (j > cols - 1))
             throw MatrixError.IndexOutOfBound()
 
-        return matrix1D[convert2dToIndex(i, j)]
+        return matrix1D[convert2dToIndex(i, j)].toDouble()
     }
 
     /**
@@ -91,7 +95,7 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
     fun isOfSameSize(other: Matrix<*>) = (this.rows == other.rows && this.cols == other.cols)
 
     /**
-     * Checks if two matrix can be multiplied or not
+     * Checks if two matrix can be cross multiplied or not
      * @return If two matrix A(n×m) and B(p×q) can be multiplied not. ie checks for m = p
      */
     fun canMult(other: Matrix<*>) = (this.cols == other.rows)
@@ -131,11 +135,33 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
     operator fun unaryMinus() = (-1 * this)
 
     /**
-     * Returns the difference of two matrices. 
+     * Returns the difference of two matrices.
      * @return This returns a matrix of type double
      */
     operator fun minus(other: Matrix<*>) = this + (-other)
-    
+
+    /**
+     * Returns the cross product of two matrices as new Matrix
+     * @return The cross product of two matrices and returns a new matrix.
+     * @exception MatrixError.MatrixDimensionError This error is thrown if the number of columns of 1st matrix doesn't match number of rows of 2nd matrix
+     */
+    operator fun times(other: Matrix<*>): Matrix<Double> {
+        if (!this.canMult(other))
+            throw MatrixError.MatrixDimensionError()
+
+        val c = Matrix(Array(this.rows * other.cols) { 0.0 }, this.rows, other.cols)
+
+        for (i in 0 until this.rows) {
+            for (j in 0 until other.cols) {
+                //val resultIndex = convert2dToIndex(i, j)
+                for (k in 0 until this.cols) {
+                    c[i, j] = c[i, j] + (this[i, k] * other[k, j])
+                }
+            }
+        }
+        return c
+    }
+
     /*--------Utils methods--------*/
     /**Returns the 1D matrix array*/
     fun getMatrix1D() = matrix1D
@@ -199,7 +225,7 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
  */
 operator fun Number.times(other: Matrix<*>): Matrix<Double> {
     val matrix = other.getMatrix1D()
-    val arr = Array(other.size) {0.0}
+    val arr = Array(other.size) { 0.0 }
     arr.forEachIndexed { index, t ->
         arr[index] = (this.toDouble() * matrix[index].toDouble())
     }
