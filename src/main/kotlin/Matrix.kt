@@ -100,6 +100,11 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
      */
     fun canMult(other: Matrix<*>) = (this.cols == other.rows)
 
+    /**
+     * Checks if a matrix is square or not.
+     * @return true if the matrix is square, else false
+     */
+    fun isSquare() = (this.rows == this.cols)
     /**Returns the matrix size**/
     val size = rows * cols
 
@@ -194,14 +199,14 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
      * Converts the index of a 1D list to a 2D list (i,j)
      * @param index the index from the 1D list
      */
-    private fun convertIndexTo2d(index: Int) = (index / cols) to (index % cols)
+    fun convertIndexTo2d(index: Int) = (index / cols) to (index % cols)
 
     /**
      * Converts a (i,j) of a 2D array into an index of a 1D array
      * @param i The i-th element of the outer array
      * @param j The j-th element of the inner arrays
      */
-    private fun convert2dToIndex(i: Int, j: Int) = i * cols + j
+    fun convert2dToIndex(i: Int, j: Int) = i * cols + j
 
     /**
      * Returns the formatted matrix;
@@ -243,3 +248,13 @@ operator fun Number.times(other: Matrix<*>): Matrix<Double> {
     }
     return Matrix(arr, other.rows, other.cols)
 }
+//
+//inline fun <reified T : Number> Matrix<T>.subSqMatrix(rowToExclude: Int, colToExclude: Int): Matrix<T> {
+//
+//    val og_arr = this.getMatrix1D()
+//    val m = Array(this.size - 1) { 0 as T }
+//
+//    for(i in 0 until (this.rows-1)*(this.cols-1)) {
+//        val (i, j) = this.convertIndexTo2d(i)
+//    }
+//}
