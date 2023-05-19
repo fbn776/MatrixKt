@@ -1,26 +1,3 @@
-/**
- * A data class that contains a 1D matrix and its size information.
- * This is used to represent matrix as 1D list (The Matrix class treats a `matrix` as 2D array and does calculations with it)
- * @param matrix A flat list that contains the matrix elements
- * @param rows No of rows
- * @param cols Nof of cols
- */
-data class Matrix1D<T>(val matrix: Array<T>, val rows: Int, val cols: Int)
-
-/**An error container class that contains all the Errors the library can throw out.*/
-sealed class MatrixError {
-    class SizeError(msg: String = "The size of the matrix does not match the row and column count.") :
-        Exception(msg)
-
-    class IndexOutOfBound(msg: String = "Tried to access a value with index [i, j] that's outside of the index bounds") :
-        Exception(msg)
-
-    class NotSameSizeError(msg: String = "The matrices need to be of same size. The row and column count of the matrices should be same") :
-        Exception(msg)
-
-    class MatrixDimensionError(msg: String = "The number of columns in first matrix must be equal to the number of rows in second matrix for matrix multiplication.") :
-        Exception(msg)
-}
 
 /**
  * Matrix representation class that coronations/represents a single matrix.
@@ -105,6 +82,7 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
      * @return true if the matrix is square, else false
      */
     fun isSquare() = (this.rows == this.cols)
+
     /**Returns the matrix size**/
     val size = rows * cols
 
@@ -117,12 +95,12 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
      * And also if this function is implemented as an overloaded function then other functions for other operators should be too. So much typing.
      * I guess I'm lazy (could probably be stupid too, I cant find any other way to do this) (This is a very terrible way to do things)
      * @param other The other matrix
-     * @exception MatrixError.NotSameSizeError This error is raised when the passed matrix is not of the same size.
+     * @exception MatrixError.NotSameSize This error is raised when the passed matrix is not of the same size.
      * @return returns a [Matrix] of Double Type.
      */
     operator fun plus(other: Matrix<*>): Matrix<Double> {
         if (!this.isOfSameSize(other))
-            throw MatrixError.NotSameSizeError()
+            throw MatrixError.NotSameSize()
 
         val m1 = this.getMatrix1D()
         val m2 = other.getMatrix1D()
@@ -148,11 +126,11 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
     /**
      * Returns the cross product of two matrices as new Matrix
      * @return The cross product of two matrices and returns a new matrix.
-     * @exception MatrixError.MatrixDimensionError This error is thrown if the number of columns of 1st matrix doesn't match number of rows of 2nd matrix
+     * @exception MatrixError.MultiplicationDimensionError This error is thrown if the number of columns of 1st matrix doesn't match number of rows of 2nd matrix
      */
     operator fun times(other: Matrix<*>): Matrix<Double> {
         if (!this.canMult(other))
-            throw MatrixError.MatrixDimensionError()
+            throw MatrixError.MultiplicationDimensionError()
 
         val c = Matrix(Array(this.rows * other.cols) { 0.0 }, this.rows, other.cols)
         for (i in 0 until this.rows) {
@@ -171,9 +149,9 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
      */
     fun transposed(): Matrix<T> {
         val m = Matrix(this.matrix1D.copyOf(), this.cols, this.rows)
-        for(i in 0 until this.cols){
-            for(j in 0 until this.rows){
-                m[i,j] = this[j, i]
+        for (i in 0 until this.cols) {
+            for (j in 0 until this.rows) {
+                m[i, j] = this[j, i]
             }
         }
         return m
@@ -235,26 +213,3 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
         return result
     }
 }
-
-/**
- * Returns the scalar product of the Number * Matrix
- * @returns This returns a matrix of type double
- */
-operator fun Number.times(other: Matrix<*>): Matrix<Double> {
-    val matrix = other.getMatrix1D()
-    val arr = Array(other.size) { 0.0 }
-    arr.forEachIndexed { index, t ->
-        arr[index] = (this.toDouble() * matrix[index].toDouble())
-    }
-    return Matrix(arr, other.rows, other.cols)
-}
-//
-//inline fun <reified T : Number> Matrix<T>.subSqMatrix(rowToExclude: Int, colToExclude: Int): Matrix<T> {
-//
-//    val og_arr = this.getMatrix1D()
-//    val m = Array(this.size - 1) { 0 as T }
-//
-//    for(i in 0 until (this.rows-1)*(this.cols-1)) {
-//        val (i, j) = this.convertIndexTo2d(i)
-//    }
-//}
