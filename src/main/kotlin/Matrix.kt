@@ -79,6 +79,11 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
     }
 
     /**
+     * Clones a matrix and returns it.
+     */
+    fun clone(): Matrix<T> = Matrix(this.matrix1D.copyOf(), rows, cols)
+
+    /**
      * Check if two matrices are of same size.
      * @param other the other matrix to do the check
      * @return true if rows and cols of both matrices are equal, else false
@@ -100,7 +105,7 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
      * @exception MatrixError.NotSameSizeError This error is raised when the passed matrix is not of the same size.
      * @return returns a [Matrix] of Double Type.
      */
-    operator fun <E: Number> plus(other: Matrix<E>): Matrix<Double> {
+    operator fun plus(other: Matrix<*>): Matrix<Double> {
         if (!this.isOfSameSize(other))
             throw MatrixError.NotSameSizeError()
 
@@ -113,6 +118,18 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
         return Matrix(result, this.rows, this.cols)
     }
 
+    /**
+     * Returns the negative of the matrix.
+     * @return This returns a matrix of type double.
+     */
+    operator fun unaryMinus() = (-1 * this)
+
+    /**
+     * Returns the difference of two matrices. 
+     * @return This returns a matrix of type double
+     */
+    operator fun minus(other: Matrix<*>) = this + (-other)
+    
     /*--------Utils methods--------*/
     /**Returns the 1D matrix array*/
     fun getMatrix1D() = matrix1D
@@ -169,49 +186,16 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
         return result
     }
 }
-//
-//operator fun Matrix<Int>.plus(other: Matrix<Int>): Matrix<Int> {
-//    if(!this.isOfSameSize(other))
-//        throw Error.MatrixNotSameSizeError()
-//    val m1 = this.getMatrix1D()
-//    val m2 = other.getMatrix1D()
-//    m1.forEachIndexed { i, v ->
-//        m1[i] = v + m2[i]
-//    }
-//    return Matrix(m1, this.rows, this.cols)
-//}
-//
-//operator fun Matrix<Int>.plus(other: Matrix<Float>): Matrix<Float> {
-//    if(!this.isOfSameSize(other))
-//        throw Error.MatrixNotSameSizeError()
-//    val m1 = this.getMatrix1D()
-//    val m2 = other.getMatrix1D()
-//    m1.forEachIndexed { i, v ->
-//        m2[i] = v + m2[i]
-//    }
-//    return Matrix(m2, this.rows, this.cols)
-//}
-//
-//operator fun Matrix<Float>.plus(other: Matrix<Float>): Matrix<Float> {
-//    if(!this.isOfSameSize(other))
-//        throw Error.MatrixNotSameSizeError()
-//    val m1 = this.getMatrix1D()
-//    val m2 = other.getMatrix1D()
-//    m1.forEachIndexed { i, v ->
-//        m2[i] = v + m2[i]
-//    }
-//    return Matrix(m2, this.rows, this.cols)
-//}
-//
-//operator fun Matrix<Int>.plus(other: Matrix<Double>): Matrix<Double> {
-//    if(!this.isOfSameSize(other))
-//        throw Error.MatrixNotSameSizeError()
-//    val m1 = this.getMatrix1D()
-//    val m2 = other.getMatrix1D()
-//    m1.forEachIndexed { i, v ->
-//        m2[i] = v + m2[i]
-//    }
-//    return Matrix(m2, this.rows, this.cols)
-//}
 
-
+/**
+ * Returns the scalar product of the Number * Matrix
+ * @returns This returns a matrix of type double
+ */
+operator fun Number.times(other: Matrix<*>): Matrix<Double> {
+    val matrix = other.getMatrix1D()
+    val arr = Array(other.size) {0.0}
+    arr.forEachIndexed { index, t ->
+        arr[index] = (this.toDouble() * matrix[index].toDouble())
+    }
+    return Matrix(arr, other.rows, other.cols)
+}
