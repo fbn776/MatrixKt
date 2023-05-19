@@ -1,4 +1,3 @@
-
 /**
  * Matrix representation class that coronations/represents a single matrix.
  * This class holds the properties of the matrix such and no of rows, columns, size etc.
@@ -25,7 +24,7 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
      * Getter function for accessing matrix by [i, j] format
      * @param i This denotes the i-th row of the matrix
      * @param j This denotes the j-th column of the matrix
-     * @return This returns the value of the matrix at (i, j) as a Double
+     * @return This returns the value of the matrix at (i, j)
      */
     operator fun get(i: Int, j: Int): T {
         if ((i < 0) || (i > rows - 1) || (j < 0) || (j > cols - 1))
@@ -95,12 +94,12 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
      * And also if this function is implemented as an overloaded function then other functions for other operators should be too. So much typing.
      * I guess I'm lazy (could probably be stupid too, I cant find any other way to do this) (This is a very terrible way to do things)
      * @param other The other matrix
-     * @exception MatrixError.NotSameSize This error is raised when the passed matrix is not of the same size.
+     * @exception MatrixError.NotSameSizeMatrix This error is raised when the passed matrix is not of the same size.
      * @return returns a [Matrix] of Double Type.
      */
     operator fun plus(other: Matrix<*>): Matrix<Double> {
         if (!this.isOfSameSize(other))
-            throw MatrixError.NotSameSize()
+            throw MatrixError.NotSameSizeMatrix()
 
         val m1 = this.getMatrix1D()
         val m2 = other.getMatrix1D()
@@ -156,6 +155,8 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
         }
         return m
     }
+
+
 
     /*--------Utils methods--------*/
     /**Returns the 1D matrix array*/
