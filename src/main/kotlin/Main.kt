@@ -11,6 +11,7 @@ fun main() {
     println("matrix 2 is $m2")
 
     val sum = m1 + m2
+    val z = sum[1,1]
     println("The result is $sum")
 }
 

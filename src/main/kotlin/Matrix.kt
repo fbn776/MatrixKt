@@ -8,14 +8,14 @@
 data class Matrix1D<T>(val matrix: Array<T>, val rows: Int, val cols: Int)
 
 /**An error container class that contains all the Errors the library can throw out.*/
-private sealed class Error {
-    class MatrixSizeError(msg: String = "The size of the matrix does not match the row and column count.") :
+sealed class MatrixError {
+    class SizeError(msg: String = "The size of the matrix does not match the row and column count.") :
         Exception(msg)
 
-    class MatrixIndexOutOfBound(msg: String = "Tried to access a value with index [i, j] that's outside of the index bounds") :
+    class IndexOutOfBound(msg: String = "Tried to access a value with index [i, j] that's outside of the index bounds") :
         Exception(msg)
 
-    class MatrixNotSameSizeError(msg: String = "The matrices need to be of same size. The row and column count of the matrices should be same") :
+    class NotSameSizeError(msg: String = "The matrices need to be of same size. The row and column count of the matrices should be same") :
         Exception(msg)
 }
 
@@ -36,7 +36,7 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
     init {
         //Check if the size of the matrix values is in accordance with the given rows and cols value;
         if (rows * cols != matrix1D.size) {
-            throw Error.MatrixSizeError()
+            throw MatrixError.SizeError()
         }
     }
 
@@ -48,7 +48,7 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
      */
     operator fun get(i: Int, j: Int): T {
         if ((i < 0) || (i > rows - 1) || (j < 0) || (j > cols - 1))
-            throw Error.MatrixIndexOutOfBound()
+            throw MatrixError.IndexOutOfBound()
 
         return matrix1D[convert2dToIndex(i, j)]
     }
@@ -61,7 +61,7 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
      */
     operator fun set(i: Int, j: Int, newValue: T): T {
         if ((i < 0) || (i > rows - 1) || (j < 0) || (j > cols - 1))
-            throw Error.MatrixIndexOutOfBound()
+            throw MatrixError.IndexOutOfBound()
 
         matrix1D[convert2dToIndex(i, j)] = newValue
         return newValue
@@ -89,27 +89,28 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
     val size = rows * cols
 
     /*--------Operators methods--------*/
-    inline operator fun <reified E : Number> plus(other: Matrix<E>): Matrix<*> {
+    /**
+     * Returns the sum of two matrices of same size.
+     * The resultant is a Matrix<Double> type. This is due to difficulties in finding the types of passed matrices.
+     * One way to solve this would be function overloading.
+     * But the issue is code size increases (ie there is a need for separate function for Int + Int, Int + Float. Int + Double and so on combinations).
+     * And also if this function is implemented as an overloaded function then other functions for other operators should be too. So much typing.
+     * I guess I'm lazy (could probably be stupid too, I cant find any other way to do this) (This is a very terrible way to do things)
+     * @param other The other matrix
+     * @exception MatrixError.NotSameSizeError This error is raised when the passed matrix is not of the same size.
+     * @return returns a [Matrix] of Double Type.
+     */
+    operator fun <E: Number> plus(other: Matrix<E>): Matrix<Double> {
         if (!this.isOfSameSize(other))
-            throw Error.MatrixNotSameSizeError()
-
+            throw MatrixError.NotSameSizeError()
 
         val m1 = this.getMatrix1D()
         val m2 = other.getMatrix1D()
-
-
-        return when (E::class.java.simpleName) {
-            "Integer" -> {
-                val result = Array(this.size) { 0 }
-                m1.forEachIndexed { i, v ->
-                    result[i] = v.toInt() + m2[i].toInt()
-                }
-                return Matrix(result, this.rows, this.cols)
-            }
-            else -> {
-                return Matrix(result, this.rows, this.cols)
-            }
+        val result = Array(this.size) { 0.0 }
+        result.forEachIndexed { i, _ ->
+            result[i] = m1[i].toDouble() + m2[i].toDouble()
         }
+        return Matrix(result, this.rows, this.cols)
     }
 
     /*--------Utils methods--------*/
