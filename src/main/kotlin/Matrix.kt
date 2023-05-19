@@ -90,6 +90,7 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
      */
     fun isOfSameSize(other: Matrix<*>) = (this.rows == other.rows && this.cols == other.cols)
 
+    fun canMult(other: Matrix<*>) = (this.cols == other.rows)
     /**Returns the matrix size**/
     val size = rows * cols
 
