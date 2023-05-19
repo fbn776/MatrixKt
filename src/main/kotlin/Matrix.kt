@@ -90,7 +90,12 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
      */
     fun isOfSameSize(other: Matrix<*>) = (this.rows == other.rows && this.cols == other.cols)
 
+    /**
+     * Checks if two matrix can be multiplied or not
+     * @return If two matrix A(n×m) and B(p×q) can be multiplied not. ie checks for m = p
+     */
     fun canMult(other: Matrix<*>) = (this.cols == other.rows)
+
     /**Returns the matrix size**/
     val size = rows * cols
 
