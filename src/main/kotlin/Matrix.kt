@@ -14,6 +14,9 @@ private sealed class Error {
 
     class MatrixIndexOutOfBound(msg: String = "Tried to access a value with index [i, j] that's outside of the index bounds") :
         Exception(msg)
+
+    class MatrixNotSameSizeError(msg: String = "The matrices need to be of same size. The row and column count of the matrices should be same") :
+        Exception(msg)
 }
 
 /**
@@ -84,9 +87,29 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
 
     /**Returns the matrix size**/
     val size = rows * cols
-    /*--------Operators methods--------*/
-    operator fun plus(other: Matrix<*>) {
 
+    /*--------Operators methods--------*/
+    inline operator fun <reified E : Number> plus(other: Matrix<E>): Matrix<*> {
+        if (!this.isOfSameSize(other))
+            throw Error.MatrixNotSameSizeError()
+
+
+        val m1 = this.getMatrix1D()
+        val m2 = other.getMatrix1D()
+
+
+        return when (E::class.java.simpleName) {
+            "Integer" -> {
+                val result = Array(this.size) { 0 }
+                m1.forEachIndexed { i, v ->
+                    result[i] = v.toInt() + m2[i].toInt()
+                }
+                return Matrix(result, this.rows, this.cols)
+            }
+            else -> {
+                return Matrix(result, this.rows, this.cols)
+            }
+        }
     }
 
     /*--------Utils methods--------*/
@@ -145,3 +168,49 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
         return result
     }
 }
+//
+//operator fun Matrix<Int>.plus(other: Matrix<Int>): Matrix<Int> {
+//    if(!this.isOfSameSize(other))
+//        throw Error.MatrixNotSameSizeError()
+//    val m1 = this.getMatrix1D()
+//    val m2 = other.getMatrix1D()
+//    m1.forEachIndexed { i, v ->
+//        m1[i] = v + m2[i]
+//    }
+//    return Matrix(m1, this.rows, this.cols)
+//}
+//
+//operator fun Matrix<Int>.plus(other: Matrix<Float>): Matrix<Float> {
+//    if(!this.isOfSameSize(other))
+//        throw Error.MatrixNotSameSizeError()
+//    val m1 = this.getMatrix1D()
+//    val m2 = other.getMatrix1D()
+//    m1.forEachIndexed { i, v ->
+//        m2[i] = v + m2[i]
+//    }
+//    return Matrix(m2, this.rows, this.cols)
+//}
+//
+//operator fun Matrix<Float>.plus(other: Matrix<Float>): Matrix<Float> {
+//    if(!this.isOfSameSize(other))
+//        throw Error.MatrixNotSameSizeError()
+//    val m1 = this.getMatrix1D()
+//    val m2 = other.getMatrix1D()
+//    m1.forEachIndexed { i, v ->
+//        m2[i] = v + m2[i]
+//    }
+//    return Matrix(m2, this.rows, this.cols)
+//}
+//
+//operator fun Matrix<Int>.plus(other: Matrix<Double>): Matrix<Double> {
+//    if(!this.isOfSameSize(other))
+//        throw Error.MatrixNotSameSizeError()
+//    val m1 = this.getMatrix1D()
+//    val m2 = other.getMatrix1D()
+//    m1.forEachIndexed { i, v ->
+//        m2[i] = v + m2[i]
+//    }
+//    return Matrix(m2, this.rows, this.cols)
+//}
+
+
