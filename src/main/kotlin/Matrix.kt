@@ -160,21 +160,20 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
         return c
     }
 
-    fun transpose(): Matrix<T> {
-        for (i in 0 until rows) {
-            for (j in 1 until cols) {
-                if(i == j)
-                    continue
-
-                val temp = this[i ,j]
-                //println("Before ($i,$j) = ${this[i, j]}, ($j,$i) = ${this[j, i]}")
-                this[i, j] = this[j, i]
-                this[j ,i] = temp
-                println("After ($i,$j) = ${this[i, j]}, ($j,$i) = ${this[j, i]}")
+    /**
+     * This returns the transposed matrix.
+     * @return The transposed matrix
+     */
+    fun transposed(): Matrix<T> {
+        val m = Matrix(this.matrix1D.copyOf(), this.cols, this.rows)
+        for(i in 0 until this.cols){
+            for(j in 0 until this.rows){
+                m[i,j] = this[j, i]
             }
         }
-        return this
+        return m
     }
+
     /*--------Utils methods--------*/
     /**Returns the 1D matrix array*/
     fun getMatrix1D() = matrix1D

@@ -4,16 +4,12 @@ fun main() {
     val values3 = arrayOf("hi", "hello")
 
     val m1 = Matrix(values1, 3, 3)
-    val m2 = Matrix(values2, 3, 4)
+    val m2 = Matrix(values2, 4, 3)
 
-    val m3 = m1.transposed()
+    val m3 = m2.transposed()
 
-    println("matrix 1 is $m1")
+    println("matrix 2 is $m2")
     println("transposed is ${m3}")
 
-
-    val z = m1 * m2
-    println("The result is $z")
-    //val x = (1 as Float + 1 as Long)
 }
 
