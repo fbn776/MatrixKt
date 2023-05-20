@@ -1,14 +1,4 @@
 /**
- * A data class that contains a 1D matrix and its size information.
- * This is used to represent matrix as 1D list (The Matrix class treats a `matrix` as 2D array and does calculations with it)
- * @param matrix A flat list that contains the matrix elements
- * @param rows No of rows
- * @param cols Nof of cols
- */
-data class Matrix1D<T>(val matrix: Array<T>, val rows: Int, val cols: Int)
-
-
-/**
  * Returns the scalar product of the Number * Matrix
  * @returns This returns a matrix of type double
  */
@@ -20,4 +10,30 @@ operator fun Number.times(other: Matrix<*>): Matrix<Double> {
     }
     return Matrix(arr, other.rows, other.cols)
 }
+
+/**Returns the 2D matrix array*/
+fun <T: Number> Matrix<T>.getMatrix2D(): Array<Array<Number>> {
+    val matrix2D = Array(rows) { Array(cols) { 0 as Number } }
+    //Packs the 1D matrix with the `rows` and `cols` information into a 2D matrix.
+    for (i in 0 until rows) {
+        for (j in 0 until cols) {
+            matrix2D[i][j] = getMatrix1D()[i * cols + j] as T
+        }
+    }
+    return matrix2D
+}
+
+/**
+ * Converts the index of a 1D list to a 2D list (i,j)
+ * @param index the index from the 1D list
+ */
+fun <T: Number> Matrix<T>.convertIndexTo2d(index: Int) = (index / cols) to (index % cols)
+
+/**
+ * Converts a (i,j) of a 2D array into an index of a 1D array
+ * @param i The i-th element of the outer array
+ * @param j The j-th element of the inner arrays
+ */
+fun <T: Number> Matrix<T>.convert2dToIndex(i: Int, j: Int) = i * cols + j
+
 

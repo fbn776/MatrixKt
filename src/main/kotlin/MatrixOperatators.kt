@@ -1,4 +1,75 @@
 /*--------Operators methods--------*/
+
+/**
+ * Returns the sum of two matrices of same size.
+ * The resultant is a Matrix<Double> type. This is due to difficulties in finding the types of passed matrices.
+ * One way to solve this would be function overloading.
+ * But the issue is code size increases (ie there is a need for separate function for Int + Int, Int + Float. Int + Double and so on combinations).
+ * And also if this function is implemented as an overloaded function then other functions for other operators should be too. So much typing.
+ * I guess I'm lazy (could probably be stupid too, I cant find any other way to do this) (This is a very terrible way to do things)
+ * @param other The other matrix
+ * @exception MatrixError.NotSameSizeMatrix This error is raised when the passed matrix is not of the same size.
+ * @return returns a [Matrix] of Double Type.
+ */
+operator fun <T: Number> Matrix<T>.plus(other: Matrix<*>): Matrix<Double> {
+    if (!this.isOfSameSize(other))
+        throw MatrixError.NotSameSizeMatrix()
+
+    val m1 = this.getMatrix1D()
+    val m2 = other.getMatrix1D()
+    val result = Array(this.size) { 0.0 }
+    result.forEachIndexed { i, _ ->
+        result[i] = m1[i].toDouble() + m2[i].toDouble()
+    }
+    return Matrix(result, this.rows, this.cols)
+}
+
+/**
+ * Returns the negative of the matrix.
+ * @return This returns a matrix of type double.
+ */
+operator fun <T: Number> Matrix<T>.unaryMinus() = (-1 * this)
+
+/**
+ * Returns the difference of two matrices.
+ * @return This returns a matrix of type double
+ */
+operator fun <T: Number> Matrix<T>.minus(other: Matrix<*>) = this + (-other)
+
+/**
+ * Returns the cross product of two matrices as new Matrix
+ * @return The cross product of two matrices and returns a new matrix.
+ * @exception MatrixError.MultiplicationDimensionError This error is thrown if the number of columns of 1st matrix doesn't match number of rows of 2nd matrix
+ */
+operator fun <T: Number> Matrix<T>.times(other: Matrix<*>): Matrix<Double> {
+    if (!this.canMult(other))
+        throw MatrixError.MultiplicationDimensionError()
+
+    val c = Matrix(Array(this.rows * other.cols) { 0.0 }, this.rows, other.cols)
+    for (i in 0 until this.rows) {
+        for (j in 0 until other.cols) {
+            for (k in 0 until this.cols) {
+                c[i, j] = c[i, j] + (this[i, k].toDouble() * other[k, j].toDouble())
+            }
+        }
+    }
+    return c
+}
+
+/**
+ * This returns the transposed matrix.
+ * @return The transposed matrix
+ */
+fun <T: Number> Matrix<T>.transposed(): Matrix<T> {
+    val m = Matrix(getMatrix1D().copyOf(), this.cols, this.rows)
+    for (i in 0 until this.cols) {
+        for (j in 0 until this.rows) {
+            m[i, j] = this[j, i]
+        }
+    }
+    return m
+}
+
 /**
  * This returns a new matrix with 1 row and 1 column less than the original matrix.
  * @param rowToExclude The row to exclude from the matrix.
@@ -68,73 +139,3 @@ fun <T : Number> Matrix<T>.determinant(): Double {
 
     return det
 }
-
-///**
-// * Returns the sum of two matrices of same size.
-// * The resultant is a Matrix<Double> type. This is due to difficulties in finding the types of passed matrices.
-// * One way to solve this would be function overloading.
-// * But the issue is code size increases (ie there is a need for separate function for Int + Int, Int + Float. Int + Double and so on combinations).
-// * And also if this function is implemented as an overloaded function then other functions for other operators should be too. So much typing.
-// * I guess I'm lazy (could probably be stupid too, I cant find any other way to do this) (This is a very terrible way to do things)
-// * @param other The other matrix
-// * @exception MatrixError.NotSameSizeMatrix This error is raised when the passed matrix is not of the same size.
-// * @return returns a [Matrix] of Double Type.
-// */
-//operator fun <T: Number> Matrix<T>.plus(other: Matrix<*>): Matrix<Double> {
-//    if (!this.isOfSameSize(other))
-//        throw MatrixError.NotSameSizeMatrix()
-//
-//    val m1 = this.getMatrix1D()
-//    val m2 = other.getMatrix1D()
-//    val result = Array(this.size) { 0.0 }
-//    result.forEachIndexed { i, _ ->
-//        result[i] = m1[i].toDouble() + m2[i].toDouble()
-//    }
-//    return Matrix(result, this.rows, this.cols)
-//}
-//
-///**
-// * Returns the negative of the matrix.
-// * @return This returns a matrix of type double.
-// */
-//operator fun <T: Number> Matrix<T>.unaryMinus() = (-1 * this)
-//
-///**
-// * Returns the difference of two matrices.
-// * @return This returns a matrix of type double
-// */
-//operator fun <T: Number> Matrix<T>.minus(other: Matrix<*>) = this + (-other)
-//
-///**
-// * Returns the cross product of two matrices as new Matrix
-// * @return The cross product of two matrices and returns a new matrix.
-// * @exception MatrixError.MultiplicationDimensionError This error is thrown if the number of columns of 1st matrix doesn't match number of rows of 2nd matrix
-// */
-//operator fun <T: Number> Matrix<T>.times(other: Matrix<*>): Matrix<Double> {
-//    if (!this.canMult(other))
-//        throw MatrixError.MultiplicationDimensionError()
-//
-//    val c = Matrix(Array(this.rows * other.cols) { 0.0 }, this.rows, other.cols)
-//    for (i in 0 until this.rows) {
-//        for (j in 0 until other.cols) {
-//            for (k in 0 until this.cols) {
-//                c[i, j] = c[i, j] + (this[i, k].toDouble() * other[k, j].toDouble())
-//            }
-//        }
-//    }
-//    return c
-//}
-//
-///**
-// * This returns the transposed matrix.
-// * @return The transposed matrix
-// */
-//fun <T: Number> Matrix<T>.transposed(): Matrix<T> {
-//    val m = Matrix(getMatrix1D().copyOf(), this.cols, this.rows)
-//    for (i in 0 until this.cols) {
-//        for (j in 0 until this.rows) {
-//            m[i, j] = this[j, i]
-//        }
-//    }
-//    return m
-//}
