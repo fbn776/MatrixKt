@@ -40,7 +40,7 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
      * @exception MatrixError.IndexOutOfBound Thrown when the passed index is out of bounds.
      */
     fun getValueAtIndex(i: Int): T {
-        if(i > size || i < 0)
+        if (i > size || i < 0)
             throw MatrixError.IndexOutOfBound()
 
         return matrix1D[i]
@@ -60,6 +60,15 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
         return newValue
     }
 
+    /**Returns the matrix size**/
+    val size = rows * cols
+
+    /**Returns the 1D matrix array*/
+    fun getMatrix1D() = matrix1D
+
+    /**Returns the copy of 2D matrix array*/
+    fun getClonedMatrix2D() = matrix1D.copyOf()
+
     /**
      * Checks if a [Matrix] and an item is equal or not.
      */
@@ -68,39 +77,8 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
         if (javaClass != other?.javaClass) return false
         other as Matrix<*>
         if (this.rows != other.rows || this.cols != other.cols) return false
-        return matrix1D.contentEquals(other.matrix1D)
+        return this.getMatrix1D().contentEquals(other.getMatrix1D())
     }
-
-    /**
-     * Clones a matrix and returns it.
-     */
-    fun clone(): Matrix<T> = Matrix(this.matrix1D.copyOf(), rows, cols)
-
-    /**
-     * Check if two matrices are of same size.
-     * @param other the other matrix to do the check
-     * @return true if rows and cols of both matrices are equal, else false
-     */
-    fun isOfSameSize(other: Matrix<*>) = (this.rows == other.rows && this.cols == other.cols)
-
-    /**
-     * Checks if two matrix can be cross multiplied or not
-     * @return If two matrix A(n×m) and B(p×q) can be multiplied not. ie checks for m = p
-     */
-    fun canMult(other: Matrix<*>) = (this.cols == other.rows)
-
-    /**
-     * Checks if a matrix is square or not.
-     * @return true if the matrix is square, else false
-     */
-    fun isSquare() = (this.rows == this.cols)
-
-    /**Returns the matrix size**/
-    val size = rows * cols
-
-    /**Returns the 1D matrix array*/
-    fun getMatrix1D() = matrix1D
-
 
     /**
      * Returns the formatted matrix;

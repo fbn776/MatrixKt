@@ -1,4 +1,28 @@
 /**
+ * Clones a matrix and returns it.
+ */
+fun <T: Number> Matrix<T>.clone(): Matrix<T> = Matrix(this.getMatrix1D(), rows, cols)
+
+/**
+ * Check if two matrices are of same size.
+ * @param other the other matrix to do the check
+ * @return true if rows and cols of both matrices are equal, else false
+ */
+fun <T: Number> Matrix<T>.isOfSameSize(other: Matrix<*>) = (this.rows == other.rows && this.cols == other.cols)
+
+/**
+ * Checks if two matrix can be cross multiplied or not
+ * @return If two matrix A(n×m) and B(p×q) can be multiplied not. ie checks for m = p
+ */
+fun <T: Number> Matrix<T>.canMult(other: Matrix<*>) = (this.cols == other.rows)
+
+/**
+ * Checks if a matrix is square or not.
+ * @return true if the matrix is square, else false
+ */
+fun <T: Number> Matrix<T>.isSquare() = (this.rows == this.cols)
+
+/**
  * Returns the scalar product of the Number * Matrix
  * @returns This returns a matrix of type double
  */
