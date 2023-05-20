@@ -34,6 +34,19 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
     }
 
     /**
+     * Returns the ith element of the matrix
+     * @param i The position of element to be returned.
+     * @return element at ith position
+     * @exception MatrixError.IndexOutOfBound Thrown when the passed index is out of bounds.
+     */
+    fun getValueAtIndex(i: Int): T {
+        if(i > size || i < 0)
+            throw MatrixError.IndexOutOfBound()
+
+        return matrix1D[i]
+    }
+
+    /**
      * Set a value specific value of the matrix at (i, j) and returns the new value;
      * @param i the i-th position
      * @param j the j-th position
@@ -157,7 +170,6 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
     }
 
 
-
     /*--------Utils methods--------*/
     /**Returns the 1D matrix array*/
     fun getMatrix1D() = matrix1D
@@ -214,3 +226,4 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
         return result
     }
 }
+

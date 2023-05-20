@@ -7,10 +7,13 @@ fun main() {
     val m2 = Matrix(values2, 4, 4)
     val m3 = Matrix(values3, 2, 2)
 
-    val m4 = m2.subSqMatrix(2,2)
+    val sub1 = m2.subSqMatrix(0, 0)
 
+    val det1 = m1.determinant()
+    val det2 = m2.determinant()
 
-    println("sub is ${m3.subSqMatrix(1,1)}")
+    m1.getValueAtIndex(-1)
 
+    println("The det1 is $det1")
+    println("The det2 is $det2")
 }
-

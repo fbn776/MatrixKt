@@ -11,7 +11,7 @@ sealed class MatrixError {
     class SizeError(msg: String = "The size of the matrix does not match the row and column count.") :
         Exception(msg)
 
-    class IndexOutOfBound(msg: String = "Tried to access a value with index [i, j] that's outside of the index bounds") :
+    class IndexOutOfBound(msg: String = "Tried to access a value with index that's outside of the index bounds") :
         Exception(msg)
 
     class NotSameSizeMatrix(msg: String = "The matrices need to be of same size. The row and column count of the matrices should be same") :
