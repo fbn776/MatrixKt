@@ -13,7 +13,7 @@ import kotlin.math.pow
  * @exception MatrixError.NotSameSizeMatrix This error is raised when the passed matrix is not of the same size.
  * @return returns a [Matrix] of Double Type.
  */
-operator fun <T: Number> Matrix<T>.plus(other: Matrix<*>): Matrix<Double> {
+operator fun <T : Number> Matrix<T>.plus(other: Matrix<*>): Matrix<Double> {
     if (!this.isOfSameSize(other))
         throw MatrixError.NotSameSizeMatrix()
 
@@ -30,20 +30,20 @@ operator fun <T: Number> Matrix<T>.plus(other: Matrix<*>): Matrix<Double> {
  * Returns the negative of the matrix.
  * @return This returns a matrix of type double.
  */
-operator fun <T: Number> Matrix<T>.unaryMinus() = (-1 * this)
+operator fun <T : Number> Matrix<T>.unaryMinus() = (-1 * this)
 
 /**
  * Returns the difference of two matrices.
  * @return This returns a matrix of type double
  */
-operator fun <T: Number> Matrix<T>.minus(other: Matrix<*>) = this + (-other)
+operator fun <T : Number> Matrix<T>.minus(other: Matrix<*>) = this + (-other)
 
 /**
  * Returns the cross product of two matrices as new Matrix
  * @return The cross product of two matrices and returns a new matrix.
  * @exception MatrixError.MultiplicationDimensionError This error is thrown if the number of columns of 1st matrix doesn't match number of rows of 2nd matrix
  */
-operator fun <T: Number> Matrix<T>.times(other: Matrix<*>): Matrix<Double> {
+operator fun <T : Number> Matrix<T>.times(other: Matrix<*>): Matrix<Double> {
     if (!this.canMult(other))
         throw MatrixError.MultiplicationDimensionError()
 
@@ -62,7 +62,7 @@ operator fun <T: Number> Matrix<T>.times(other: Matrix<*>): Matrix<Double> {
  * This returns the transposed matrix.
  * @return The transposed matrix
  */
-fun <T: Number> Matrix<T>.transposed(): Matrix<T> {
+fun <T : Number> Matrix<T>.transposed(): Matrix<T> {
     val m = Matrix(getMatrix1D().copyOf(), this.cols, this.rows)
     for (i in 0 until this.cols) {
         for (j in 0 until this.rows) {
@@ -142,27 +142,27 @@ fun <T : Number> Matrix<T>.determinant(): Double {
     return det
 }
 
+inline fun <reified T : Number> Matrix<T>.minorAt(i: Int, j: Int): Double {
+    if (!this.isSquare())
+        throw MatrixError.NotSquareMatrix()
 
-//
-//fun <T: Number> Matrix<T>.minorAt(i: Int, j: Int): T {
-//    if(!this.isSquare())
-//        throw MatrixError.NotSquareMatrix()
-//
-//    if ((i < 0) || (i > rows - 1) || (j < 0) || (j > cols - 1))
-//        throw MatrixError.IndexOutOfBound()
-//
-//    TODO("implement minor at (i,j")
-//}
-//
-//fun <T: Number> Matrix<T>.minorMatrix() {
-//    if(!this.isSquare())
+    if ((i < 0) || (i > rows - 1) || (j < 0) || (j > cols - 1))
+        throw MatrixError.IndexOutOfBound()
+
+    return this.subSqMatrix(i, j).determinant()
+}
+
+//inline fun <reified T : Number> Matrix<T>.minorMatrix() {
+//    if (!this.isSquare())
 //        throw MatrixError.NotSquareMatrix()
 //
 //    val m = this.clone()
+//    m.forEachIndexed2d { (i, j), _ ->
+//        m[i, j] = this.minorAt(i, j)
+//    }
 //
-//    TODO("Create the minor matrix operator")
 //}
-//
+
 //fun <T: Number> Matrix<T>.cofactorAt(i: Int, j: Int): T {
 //    val minorAtIJ = this.minorAt(i, j).toDouble()
 //

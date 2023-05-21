@@ -112,5 +112,20 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
         currentIndex++
         return element
     }
-}
 
+    /*--------Matrix Companion Object--------*/
+    companion object {
+        /**
+         * Returns a new [Matrix] of type [E] and size [noRows] x [noCols] abd filled with [elements]
+         * @param noRows The number of rows of the matrix
+         * @param noCols The number of columns of the matrix
+         * @param elements The elements to fill the matrix with.
+         */
+        inline fun <reified E: Number> typedMatrixOf(noRows: Int, noCols: Int, elements: () -> E): Matrix<E> {
+            if(noRows <= 0 || noCols <= 0)
+                throw MatrixError.SizeInvalid(note = "Size ($noRows, $noCols) is invalid")
+
+            return Matrix(Array(noRows * noCols) { elements() }, noRows, noCols)
+        }
+    }
+}
