@@ -27,7 +27,7 @@ fun <T : Number> Matrix<T>.isSquare() = (this.rows == this.cols)
  * @return true if the matrix is a singular matrix, else false
  * @exception MatrixError.NotSquareMatrix This error is thrown if the matrix is not a square matrix.
  */
-fun <T: Number> Matrix<T>.isSingular(): Boolean {
+fun <T : Number> Matrix<T>.isSingular(): Boolean {
     if (!this.isSquare())
         throw MatrixError.NotSquareMatrix()
 
@@ -35,8 +35,8 @@ fun <T: Number> Matrix<T>.isSingular(): Boolean {
 }
 
 /**Returns the 2D matrix array*/
-inline fun <reified  T : Number> Matrix<T>.getMatrix2D(): Array<Array<T>> {
-    val matrix2D = Array(rows) { Array(cols) { this[0,0] } }
+inline fun <reified T : Number> Matrix<T>.getMatrix2D(): Array<Array<T>> {
+    val matrix2D = Array(rows) { Array(cols) { this[0, 0] } }
     //Packs the 1D matrix with the `rows` and `cols` information into a 2D matrix.
     for (i in 0 until rows) {
         for (j in 0 until cols) {
@@ -123,3 +123,57 @@ inline fun <reified T : Number> Matrix<T>.columnAt(colNum: Int): Array<T> {
     return col
 }
 
+/**
+ * Converts a matrix type Int, Float etc. to a matrix of type [Double]
+ */
+fun <T : Number> Matrix<T>.toDouble(): Matrix<Double> {
+    val m = Matrix<Double>(Array(this.size) { 0.0 }, this.rows, this.cols)
+    this.forEachIndexed2d { (i,j), t ->
+        m[i, j] = t.toDouble()
+    }
+    return m
+}
+
+/**
+ * Converts a matrix type Int, Float etc. to a matrix of type [Int]
+ */
+fun <T : Number> Matrix<T>.toInt(): Matrix<Int> {
+    val m = Matrix<Int>(Array(this.size) { 0 }, this.rows, this.cols)
+    this.forEachIndexed2d { (i,j), t ->
+        m[i, j] = t.toInt()
+    }
+    return m
+}
+
+/**
+ * Converts a matrix type Int, Float etc. to a matrix of type [Float]
+ */
+fun <T : Number> Matrix<T>.toFloat(): Matrix<Float> {
+    val m = Matrix<Float>(Array(this.size) { 0f }, this.rows, this.cols)
+    this.forEachIndexed2d { (i,j), t ->
+        m[i, j] = t.toFloat()
+    }
+    return m
+}
+
+/**
+ * Converts a matrix type Int, Float etc. to a matrix of type [Long]
+ */
+fun <T : Number> Matrix<T>.toLong(): Matrix<Long> {
+    val m = Matrix<Long>(Array(this.size) { 0L }, this.rows, this.cols)
+    this.forEachIndexed2d { (i,j), t ->
+        m[i, j] = t.toLong()
+    }
+    return m
+}
+
+/**
+ * Converts a matrix type Int, Float etc. to a matrix of type [Short]
+ */
+fun <T : Number> Matrix<T>.toShort(): Matrix<Short> {
+    val m = Matrix<Short>(Array(this.size) { 0 }, this.rows, this.cols)
+    this.forEachIndexed2d { (i,j), t ->
+        m[i, j] = t.toShort()
+    }
+    return m
+}
