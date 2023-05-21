@@ -7,4 +7,7 @@ fun main() {
     val m2 = Matrix(values2, 4, 4)
     val m3 = Matrix(values3, 3, 3)
 
+    val minorMatrix = m1.minorMatrix()
+    println(m1)
+    println(minorMatrix)
 }

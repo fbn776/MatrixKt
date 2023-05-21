@@ -152,16 +152,22 @@ inline fun <reified T : Number> Matrix<T>.minorAt(i: Int, j: Int): Double {
     return this.subSqMatrix(i, j).determinant()
 }
 
-//inline fun <reified T : Number> Matrix<T>.minorMatrix() {
-//    if (!this.isSquare())
-//        throw MatrixError.NotSquareMatrix()
-//
-//    val m = this.clone()
-//    m.forEachIndexed2d { (i, j), _ ->
-//        m[i, j] = this.minorAt(i, j)
-//    }
-//
-//}
+/**
+ * Returns the minor matrix of a square matrix
+ * @return the minor matrix of the given matrix as a double.
+ * @exception MatrixError.NotSquareMatrix Thrown when the passed matrix is not a square matrix (For finding the determinant, a square matrix is required).
+ */
+inline fun <reified T : Number> Matrix<T>.minorMatrix(): Matrix<Double> {
+    if (!this.isSquare())
+        throw MatrixError.NotSquareMatrix()
+
+    val m = Matrix.typedMatrixOf(this.rows, this.cols) {0.0}
+
+    m.forEachIndexed2d { (i, j), _ ->
+        m[i, j] = this.minorAt(i, j)
+    }
+    return m
+}
 
 //fun <T: Number> Matrix<T>.cofactorAt(i: Int, j: Int): T {
 //    val minorAtIJ = this.minorAt(i, j).toDouble()
