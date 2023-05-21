@@ -36,6 +36,9 @@ sealed class MatrixError {
 
     class SizeInvalid(msg: String = "The size of the matrix is invalid", note: String = "") :
         Exception(formatMessage(msg, note))
+
+    class SingularMatrix(msg: String = "The matrix is singular", note: String = "") :
+        Exception(formatMessage(msg, note))
 }
 
 

@@ -23,16 +23,15 @@ fun <T : Number> Matrix<T>.canMult(other: Matrix<*>) = (this.cols == other.rows)
 fun <T : Number> Matrix<T>.isSquare() = (this.rows == this.cols)
 
 /**
- * Returns the scalar product of the Number * Matrix
- * @returns This returns a matrix of type double
+ * Checks if a square matrix is a singular matrix or not (determinate = 0)
+ * @return true if the matrix is a singular matrix, else false
+ * @exception MatrixError.NotSquareMatrix This error is thrown if the matrix is not a square matrix.
  */
-operator fun Number.times(other: Matrix<*>): Matrix<Double> {
-    val matrix = other.getMatrix1D()
-    val arr = Array(other.size) { 0.0 }
-    arr.forEachIndexed { index, t ->
-        arr[index] = (this.toDouble() * matrix[index].toDouble())
-    }
-    return Matrix(arr, other.rows, other.cols)
+fun <T: Number> Matrix<T>.isSingular(): Boolean {
+    if (!this.isSquare())
+        throw MatrixError.NotSquareMatrix()
+
+    return this.determinant() == 0.0
 }
 
 /**Returns the 2D matrix array*/

@@ -1,7 +1,5 @@
 import kotlin.math.pow
 
-/*--------Operators methods--------*/
-
 /**
  * Returns the sum of two matrices of same size.
  * The resultant is a Matrix<Double> type. This is due to difficulties in finding the types of passed matrices.
@@ -37,6 +35,19 @@ operator fun <T : Number> Matrix<T>.unaryMinus() = (-1 * this)
  * @return This returns a matrix of type double
  */
 operator fun <T : Number> Matrix<T>.minus(other: Matrix<*>) = this + (-other)
+
+/**
+ * Returns the scalar product of the Number * Matrix
+ * @returns This returns a matrix of type double
+ */
+operator fun Number.times(other: Matrix<*>): Matrix<Double> {
+    val matrix = other.getMatrix1D()
+    val arr = Array(other.size) { 0.0 }
+    arr.forEachIndexed { index, t ->
+        arr[index] = (this.toDouble() * matrix[index].toDouble())
+    }
+    return Matrix(arr, other.rows, other.cols)
+}
 
 /**
  * Returns the cross product of two matrices as new Matrix
@@ -207,12 +218,26 @@ inline fun <reified T : Number> Matrix<T>.cofactorMatrix(): Matrix<Double> {
     return m
 }
 
+/**
+ * Returns the adjoint of a square matrix
+ * @exception MatrixError.NotSquareMatrix Thrown when the passed matrix is not a square matrix.
+ */
+inline fun <reified T: Number> Matrix<T>.adjoint(): Matrix<Double> {
+    return this.cofactorMatrix().transposed()
+}
 
-//fun <T: Number> Matrix<T>.adjoint(): T {
-//    return this.cofactorMatrix().transposed()
-//}
+/**
+ * Returns the inverse of a square matrix
+ * @return the inverse of the given matrix as Matrix<Double>.
+ * @exception MatrixError.NotSquareMatrix Thrown when the passed matrix is not a square matrix.
+ * @exception MatrixError.SingularMatrix Thrown when the passed matrix is a singular matrix.
+ */
+inline fun <reified T: Number> Matrix<T>.inverse(): Matrix<Double> {
+    val det = this.determinant()
 
-//fun <T: Number> Matrix<T>.inverse(): Matrix<Double> {
-//    return (1/this.determinant()) * this.adjoint()
-//}
+    if (det == 0.0)
+        throw MatrixError.SingularMatrix()
+
+    return (1/det) * this.adjoint()
+}
 
