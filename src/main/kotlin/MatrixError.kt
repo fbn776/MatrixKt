@@ -8,27 +8,32 @@
  * @property DimensionOutOfBounds An error that is thrown when the dimension(row, column) given is out of bounds. For eg: This is thrown when subSqMatrix(4,4) is called on a 3x3 or lower matrix.
  * */
 sealed class MatrixError {
-    class SizeError(msg: String = "The size of the matrix does not match the row and column count.") :
-        Exception(msg)
+    class SizeError(msg: String = "The size of the matrix does not match the row and column count. ", note: String = "") :
+        Exception(formatMessage(msg, note))
 
-    class IndexOutOfBound(msg: String = "Tried to access a value with index that's outside of the index bounds") :
-        Exception(msg)
+    class IndexOutOfBound(msg: String = "Tried to access a value with index that's outside of the index bounds", note: String = "") :
+        Exception(formatMessage(msg, note))
 
-    class NotSameSizeMatrix(msg: String = "The matrices need to be of same size. The row and column count of the matrices should be same") :
-        Exception(msg)
+    class NotSameSizeMatrix(msg: String = "The matrices need to be of same size. The row and column count of the matrices should be same", note: String = "") :
+        Exception(formatMessage(msg, note))
 
-    class MultiplicationDimensionError(msg: String = "The number of columns in first matrix must be equal to the number of rows in second matrix for matrix multiplication.") :
-        Exception(msg)
+    class MultiplicationDimensionError(msg: String = "The number of columns in first matrix must be equal to the number of rows in second matrix for matrix multiplication.", note: String = "") :
+        Exception(formatMessage(msg, note))
 
-    class NotSquareMatrix(msg: String = "The matrix must be square for this operation.") :
-        Exception(msg)
+    class NotSquareMatrix(msg: String = "The matrix must be square for this operation.", note: String = "") :
+        Exception(formatMessage(msg, note))
 
-    class SizeTooSmall(msg: String = "The matrix size is too small") :
-        Exception(msg)
+    class SizeTooSmall(msg: String = "The matrix size is too small", note: String = "") :
+        Exception(formatMessage(msg, note))
 
-    class DimensionOutOfBounds(msg: String = "The dimension given is out of bounds") :
-        Exception(msg)
+    class DimensionOutOfBounds(msg: String = "The dimension given is out of bounds;", note: String = "") :
+        Exception(formatMessage(msg, note))
 
-    class NoSuchElement(msg: String = "Unable to access next element as there is no next element") :
-        Exception(msg)
+    class NoSuchElement(msg: String = "Unable to access next element as there is no next element", note: String = "") :
+        Exception(formatMessage(msg, note))
+}
+
+
+private fun formatMessage(msg: String, note: String): String {
+    return msg + (if(note != "") "\nNote: $note" else "")
 }

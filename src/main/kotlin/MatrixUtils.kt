@@ -60,12 +60,10 @@ fun <T : Number> Matrix<T>.convertIndexTo2d(index: Int) = (index / cols) to (ind
  */
 fun <T : Number> Matrix<T>.convert2dToIndex(i: Int, j: Int) = i * cols + j
 
-
-
 /**
  * Performs the given [action] on each element.
  */
-inline fun <T: Number> Matrix<T>.forEach(action: (T) -> Unit): Unit {
+inline fun <T : Number> Matrix<T>.forEach(action: (T) -> Unit): Unit {
     for (element in this) action(element)
 }
 
@@ -74,7 +72,7 @@ inline fun <T: Number> Matrix<T>.forEach(action: (T) -> Unit): Unit {
  * @param [action] function that takes the index of an element and the element itself
  * and performs the action on the element.
  */
-inline fun <T: Number> Matrix<T>.forEachIndexed(action: (index: Int, T) -> Unit): Unit {
+inline fun <T : Number> Matrix<T>.forEachIndexed(action: (index: Int, T) -> Unit): Unit {
     var index = 0
     for (item in this) action(index++, item)
 }
@@ -84,7 +82,7 @@ inline fun <T: Number> Matrix<T>.forEachIndexed(action: (index: Int, T) -> Unit)
  * @param [action] function that takes the index of an element and the element itself
  * and performs the action on the element.
  */
-inline fun <T: Number> Matrix<T>.forEachIndexed2d(action: (index: Pair<Int, Int>, T) -> Unit): Unit {
+inline fun <T : Number> Matrix<T>.forEachIndexed2d(action: (index: Pair<Int, Int>, T) -> Unit): Unit {
     var index = 0
     for (item in this) {
         action(this.convertIndexTo2d(index), item)
@@ -92,25 +90,27 @@ inline fun <T: Number> Matrix<T>.forEachIndexed2d(action: (index: Pair<Int, Int>
     }
 }
 
-//inline fun <reified T : Number> Matrix<T>.getRow(rowAt: Int): Array<T> {
-//    val row = Array(this.rows) { this[0, 0] }
-//    row.forEachIndexed { i, v ->
-//        row[i] = this[rowAt, i]
-//    }
-//    return row
-//
-//    TODO("Implemeaant the forEach")
-//}
-//
-//inline fun <reified T : Number> Matrix<T>.getColumn(colAt: Int): Array<T> {
-//    val col = Array(this.cols) { this[0, 0] }
-//    col.forEachIndexed { i, _ ->
-//        col[i] = this[i, colAt]
-//    }
-//    return col
-//
-//    TODO("Implemeaant the forEach")
-//}
-//
+inline fun <reified T : Number> Matrix<T>.rowAt(rowNum: Int): Array<T> {
+    if (rowNum > this.rows - 1 || rowNum < 0)
+        throw MatrixError.DimensionOutOfBounds(note = "Row at $rowNum does not exist")
+
+    val row = Array(this.rows) { this[0, 0] }
+    row.forEachIndexed { i, _ ->
+        row[i] = this[rowNum, i]
+    }
+    return row
+}
+
+inline fun <reified T : Number> Matrix<T>.columnAt(colNum: Int): Array<T> {
+    if (colNum > this.rows - 1 || colNum < 0)
+        throw MatrixError.DimensionOutOfBounds(note = "Column at $colNum does not exist")
+
+    val col = Array(this.rows) { this[0, 0] }
+    col.forEachIndexed { i, _ ->
+        col[i] = this[i, colNum]
+    }
+    return col
+}
+
 //inline fun <reified T : Number> Matrix<T>.getColumn(colAt: Int): Array<T> = this.transposed().rowAt(colAt)
 

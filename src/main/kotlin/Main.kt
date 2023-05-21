@@ -10,6 +10,10 @@ fun main() {
     val added1 = m1 + m3
     val subtracted1 = m1 - m3
 
+    println("The matrix is $m1")
+    val x = m1.columnAt(-1)
+
+    println("The row at 1 is ${x.toList()}")
 
     println("The added is $added1")
     println("the subbed is $subtracted1")
