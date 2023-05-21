@@ -13,4 +13,7 @@ fun main() {
 
     println("The added is $added1")
     println("the subbed is $subtracted1")
+    for(i in m1) {
+        println(i)
+    }
 }

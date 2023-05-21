@@ -1,3 +1,5 @@
+import kotlin.math.pow
+
 /*--------Operators methods--------*/
 
 /**
@@ -139,3 +141,46 @@ fun <T : Number> Matrix<T>.determinant(): Double {
 
     return det
 }
+
+
+//
+//fun <T: Number> Matrix<T>.minorAt(i: Int, j: Int): T {
+//    if(!this.isSquare())
+//        throw MatrixError.NotSquareMatrix()
+//
+//    if ((i < 0) || (i > rows - 1) || (j < 0) || (j > cols - 1))
+//        throw MatrixError.IndexOutOfBound()
+//
+//    TODO("implement minor at (i,j")
+//}
+//
+//fun <T: Number> Matrix<T>.minorMatrix() {
+//    if(!this.isSquare())
+//        throw MatrixError.NotSquareMatrix()
+//
+//    val m = this.clone()
+//
+//    TODO("Create the minor matrix operator")
+//}
+//
+//fun <T: Number> Matrix<T>.cofactorAt(i: Int, j: Int): T {
+//    val minorAtIJ = this.minorAt(i, j).toDouble()
+//
+//    return ((-1.0).pow((i + j).toDouble()) * minorAtIJ) as T
+//}
+//
+//fun <T: Number> Matrix<T>.cofactorMatrix(): T {
+//    val m = this.clone()
+////    m.forEach()
+//      TODO("Do the cofactor matrix")
+//    return m
+//}
+
+//fun <T: Number> Matrix<T>.adjoint(): T {
+//    return this.cofactorMatrix().transposed()
+//}
+
+//fun <T: Number> Matrix<T>.inverse(): Matrix<Double> {
+//    return (1/this.determinant()) * this.adjoint()
+//}
+

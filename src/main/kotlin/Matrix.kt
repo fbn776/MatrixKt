@@ -6,11 +6,13 @@
  * @param rows The number of rows of the matrix.
  * @param cols The number of columns of the matrix
  */
-class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) {
+class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) : Iterator<T> {
     /**This is the main matrix array. Operations are done on this array.
      * This is a copy of the passed array as when changing the non-copied array [m] can change the original array that passed as an argument
      */
     private val matrix1D = m.copyOf()
+    /**Returns the matrix size**/
+    val size = rows * cols
 
     init {
         //Check if the size of the matrix values is in accordance with the given rows and cols value;
@@ -60,9 +62,6 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
         return newValue
     }
 
-    /**Returns the matrix size**/
-    val size = rows * cols
-
     /**Returns the 1D matrix array*/
     fun getMatrix1D() = matrix1D
 
@@ -100,6 +99,18 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
         result = 31 * result + rows
         result = 31 * result + cols
         return result
+    }
+
+    private var currentIndex = 0
+    override fun hasNext() = (currentIndex < size)
+
+    override fun next(): T {
+        if (!hasNext())
+            throw NoSuchElementException()
+
+        val element = matrix1D[currentIndex]
+        currentIndex++
+        return element
     }
 }
 
