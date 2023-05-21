@@ -122,3 +122,4 @@ inline fun <reified T : Number> Matrix<T>.columnAt(colNum: Int): Array<T> {
     }
     return col
 }
+

@@ -80,6 +80,15 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
     }
 
     /**
+     * Checks if a [Matrix] contains an item or not.
+     * @return true if the item is present in the matrix, false otherwise.
+     */
+    operator fun contains(other: Any?): Boolean {
+        if (other !is Number) return false
+        return other in matrix1D
+    }
+
+    /**
      * Returns the formatted matrix;
      */
     override fun toString(): String {

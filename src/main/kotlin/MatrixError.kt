@@ -8,6 +8,7 @@
  * @property DimensionOutOfBounds An error that is thrown when the dimension(row, column) given is out of bounds. For eg: This is thrown when subSqMatrix(4,4) is called on a 3x3 or lower matrix.
  * @property NoSuchElement An error that is thrown when there is no next element to access. For eg: This is thrown when next() is called on an empty matrix.
  * @property SizeInvalid An error that is thrown when the size of the matrix is invalid. For eg: This is thrown when a 0x3 matrix is initialized or -1×3 matrix is initialized.
+ * @property SingularMatrix An error that is thrown when the matrix is singular. For eg: This is thrown when inverse() is called on a singular matrix.
  * */
 sealed class MatrixError {
     class SizeError(msg: String = "The size of the matrix does not match the row and column count. ", note: String = "") :
@@ -41,7 +42,12 @@ sealed class MatrixError {
         Exception(formatMessage(msg, note))
 }
 
-
+/**
+ * A function that formats the message and note into a single string. (Not really needed outside of this file)
+ * @param msg The message to be displayed.
+ * @param note The note to be displayed.
+ * @return The formatted string.
+ * */
 private fun formatMessage(msg: String, note: String): String {
     return msg + (if(note != "") "\nNote: $note" else "")
 }
