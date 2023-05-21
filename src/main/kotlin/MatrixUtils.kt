@@ -36,8 +36,8 @@ operator fun Number.times(other: Matrix<*>): Matrix<Double> {
 }
 
 /**Returns the 2D matrix array*/
-fun <T : Number> Matrix<T>.getMatrix2D(): Array<Array<Number>> {
-    val matrix2D = Array(rows) { Array(cols) { 0 as Number } }
+inline fun <reified  T : Number> Matrix<T>.getMatrix2D(): Array<Array<T>> {
+    val matrix2D = Array(rows) { Array(cols) { this[0,0] } }
     //Packs the 1D matrix with the `rows` and `cols` information into a 2D matrix.
     for (i in 0 until rows) {
         for (j in 0 until cols) {
@@ -90,6 +90,12 @@ inline fun <T : Number> Matrix<T>.forEachIndexed2d(action: (index: Pair<Int, Int
     }
 }
 
+/**
+ * Gets the row at the given [rowNum] as an array.
+ * @param [rowNum] the row to get
+ * @return The values of a row as an array
+ * @exception MatrixError.DimensionOutOfBounds thrown if the [rowNum] is out of bounds.
+ */
 inline fun <reified T : Number> Matrix<T>.rowAt(rowNum: Int): Array<T> {
     if (rowNum > this.rows - 1 || rowNum < 0)
         throw MatrixError.DimensionOutOfBounds(note = "Row at $rowNum does not exist")
@@ -101,6 +107,12 @@ inline fun <reified T : Number> Matrix<T>.rowAt(rowNum: Int): Array<T> {
     return row
 }
 
+/**
+ * Gets the column at the given [colNum] as an array.
+ * @param [colNum] the column to get
+ * @return The values of a column as an array
+ * @exception MatrixError.DimensionOutOfBounds thrown if the [colNum] is out of bounds.
+ */
 inline fun <reified T : Number> Matrix<T>.columnAt(colNum: Int): Array<T> {
     if (colNum > this.rows - 1 || colNum < 0)
         throw MatrixError.DimensionOutOfBounds(note = "Column at $colNum does not exist")
@@ -111,6 +123,3 @@ inline fun <reified T : Number> Matrix<T>.columnAt(colNum: Int): Array<T> {
     }
     return col
 }
-
-//inline fun <reified T : Number> Matrix<T>.getColumn(colAt: Int): Array<T> = this.transposed().rowAt(colAt)
-
