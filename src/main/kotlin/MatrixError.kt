@@ -28,4 +28,7 @@ sealed class MatrixError {
 
     class DimensionOutOfBounds(msg: String = "The dimension given is out of bounds") :
         Exception(msg)
+
+    class NoSuchElement(msg: String = "Unable to access next element as there is no next element") :
+        Exception(msg)
 }

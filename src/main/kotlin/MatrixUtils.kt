@@ -61,25 +61,36 @@ fun <T : Number> Matrix<T>.convertIndexTo2d(index: Int) = (index / cols) to (ind
 fun <T : Number> Matrix<T>.convert2dToIndex(i: Int, j: Int) = i * cols + j
 
 
-//
-///**
-// * Performs the given [action] on each element.
-// */
-//inline fun <T: Number> Matrix<T>.forEach(action: (T) -> Unit): Unit {
-//    for (element in this.getMatrix1D()) action(element)
-//
-//}
-//
-///**
-// * Performs the given [action] on each element, providing sequential index with the element.
-// * @param [action] function that takes the index of an element and the element itself
-// * and performs the action on the element.
-// */
-//public inline fun <T> Iterable<T>.forEachIndexed(action: (index: Pair(<Int>, <Int>), T) -> Unit): Unit {
-//    var index = 0
-//    for (item in this) action(index++, item)
-//    TODO("DO the forEachIndexed that returns an (i,j) pair")
-//}
+
+/**
+ * Performs the given [action] on each element.
+ */
+inline fun <T: Number> Matrix<T>.forEach(action: (T) -> Unit): Unit {
+    for (element in this) action(element)
+}
+
+/**
+ * Performs the given [action] on each element, providing sequential index with the element.
+ * @param [action] function that takes the index of an element and the element itself
+ * and performs the action on the element.
+ */
+inline fun <T: Number> Matrix<T>.forEachIndexed(action: (index: Int, T) -> Unit): Unit {
+    var index = 0
+    for (item in this) action(index++, item)
+}
+
+/**
+ * Performs the given [action] on each element, providing sequential index as an (i,j) pair with the element.
+ * @param [action] function that takes the index of an element and the element itself
+ * and performs the action on the element.
+ */
+inline fun <T: Number> Matrix<T>.forEachIndexed2d(action: (index: Pair<Int, Int>, T) -> Unit): Unit {
+    var index = 0
+    for (item in this) {
+        action(this.convertIndexTo2d(index), item)
+        index++
+    }
+}
 
 //inline fun <reified T : Number> Matrix<T>.getRow(rowAt: Int): Array<T> {
 //    val row = Array(this.rows) { this[0, 0] }

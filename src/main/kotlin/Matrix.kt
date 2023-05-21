@@ -101,12 +101,12 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
         return result
     }
 
+    /*--------Matrix Iterator--------*/
     private var currentIndex = 0
     override fun hasNext() = (currentIndex < size)
-
     override fun next(): T {
         if (!hasNext())
-            throw NoSuchElementException()
+            throw MatrixError.NoSuchElement()
 
         val element = matrix1D[currentIndex]
         currentIndex++
