@@ -142,6 +142,14 @@ fun <T : Number> Matrix<T>.determinant(): Double {
     return det
 }
 
+/**
+ * Returns the minor of a square matrix at (i,j)
+ * @param i The row of the element
+ * @param j The column of the element
+ * @return the minor of the given matrix at (i,j) as a double.
+ * @exception MatrixError.NotSquareMatrix Thrown when the passed matrix is not a square matrix (For finding the determinant, a square matrix is required).
+ * @exception MatrixError.IndexOutOfBound Thrown when the passed index is out of bound.
+ */
 inline fun <reified T : Number> Matrix<T>.minorAt(i: Int, j: Int): Double {
     if (!this.isSquare())
         throw MatrixError.NotSquareMatrix()
@@ -154,7 +162,7 @@ inline fun <reified T : Number> Matrix<T>.minorAt(i: Int, j: Int): Double {
 
 /**
  * Returns the minor matrix of a square matrix
- * @return the minor matrix of the given matrix as a double.
+ * @return the minor matrix as Matrix<Double>.
  * @exception MatrixError.NotSquareMatrix Thrown when the passed matrix is not a square matrix (For finding the determinant, a square matrix is required).
  */
 inline fun <reified T : Number> Matrix<T>.minorMatrix(): Matrix<Double> {
@@ -169,18 +177,36 @@ inline fun <reified T : Number> Matrix<T>.minorMatrix(): Matrix<Double> {
     return m
 }
 
-//fun <T: Number> Matrix<T>.cofactorAt(i: Int, j: Int): T {
-//    val minorAtIJ = this.minorAt(i, j).toDouble()
-//
-//    return ((-1.0).pow((i + j).toDouble()) * minorAtIJ) as T
-//}
-//
-//fun <T: Number> Matrix<T>.cofactorMatrix(): T {
-//    val m = this.clone()
-////    m.forEach()
-//      TODO("Do the cofactor matrix")
-//    return m
-//}
+/**
+ * Returns the cofactor of a square matrix at (i,j)
+ * @param i The row index
+ * @param j The column index
+ * @return the cofactor of the given matrix at (i,j) as a double.
+ * @exception MatrixError.NotSquareMatrix Thrown when the passed matrix is not a square matrix (For finding the determinant, a square matrix is required).
+ * @exception MatrixError.IndexOutOfBound Thrown when the passed index is out of bound.
+ */
+inline fun <reified T: Number> Matrix<T>.cofactorAt(i: Int, j: Int): Double {
+    val minorAtIJ = this.minorAt(i, j).toDouble()
+
+    return (-1.0).pow(i + j) * minorAtIJ
+}
+
+/**
+ * Returns the cofactor matrix of a square matrix
+ * @return the cofactor matrix as Matrix<Double>.
+ * @exception MatrixError.NotSquareMatrix Thrown when the passed matrix is not a square matrix (For finding the determinant, a square matrix is required).
+ */
+inline fun <reified T : Number> Matrix<T>.cofactorMatrix(): Matrix<Double> {
+    if (!this.isSquare())
+        throw MatrixError.NotSquareMatrix()
+
+    val m = Matrix.typedMatrixOf(this.rows, this.cols) {0.0}
+    m.forEachIndexed2d { (i, j), _ ->
+        m[i, j] = this.cofactorAt(i, j)
+    }
+    return m
+}
+
 
 //fun <T: Number> Matrix<T>.adjoint(): T {
 //    return this.cofactorMatrix().transposed()
