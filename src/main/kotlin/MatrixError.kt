@@ -6,6 +6,7 @@
  * @property NotSquareMatrix An error that is thrown when the matrix is not square. For eg: This is thrown when inverse() is called on a non-square matrix.
  * @property SizeTooSmall An error that is thrown when the matrix is too small to perform an operation. For eg: This is thrown when subSqMatrix() is called on a 1x1 matrix. It can't be divided further.
  * @property DimensionOutOfBounds An error that is thrown when the dimension(row, column) given is out of bounds. For eg: This is thrown when subSqMatrix(4,4) is called on a 3x3 or lower matrix.
+ * @property NoSuchElement An error that is thrown when there is no next element to access. For eg: This is thrown when next() is called on an empty matrix.
  * */
 sealed class MatrixError {
     class SizeError(msg: String = "The size of the matrix does not match the row and column count. ", note: String = "") :
