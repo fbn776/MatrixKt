@@ -180,7 +180,7 @@ inline fun <reified T : Number> Matrix<T>.minorMatrix(): Matrix<Double> {
     if (!this.isSquare())
         throw MatrixError.NotSquareMatrix()
 
-    val m = Matrix.typedMatrixOf(this.rows, this.cols) {0.0}
+    val m = Matrix.typedMatrixOf(this.rows, this.cols) { 0.0 }
 
     m.forEachIndexed2d { (i, j), _ ->
         m[i, j] = this.minorAt(i, j)
@@ -196,7 +196,7 @@ inline fun <reified T : Number> Matrix<T>.minorMatrix(): Matrix<Double> {
  * @exception MatrixError.NotSquareMatrix Thrown when the passed matrix is not a square matrix (For finding the determinant, a square matrix is required).
  * @exception MatrixError.IndexOutOfBound Thrown when the passed index is out of bound.
  */
-inline fun <reified T: Number> Matrix<T>.cofactorAt(i: Int, j: Int): Double {
+inline fun <reified T : Number> Matrix<T>.cofactorAt(i: Int, j: Int): Double {
     val minorAtIJ = this.minorAt(i, j).toDouble()
 
     return (-1.0).pow(i + j) * minorAtIJ
@@ -211,7 +211,7 @@ inline fun <reified T : Number> Matrix<T>.cofactorMatrix(): Matrix<Double> {
     if (!this.isSquare())
         throw MatrixError.NotSquareMatrix()
 
-    val m = Matrix.typedMatrixOf(this.rows, this.cols) {0.0}
+    val m = Matrix.typedMatrixOf(this.rows, this.cols) { 0.0 }
     m.forEachIndexed2d { (i, j), _ ->
         m[i, j] = this.cofactorAt(i, j)
     }
@@ -222,7 +222,7 @@ inline fun <reified T : Number> Matrix<T>.cofactorMatrix(): Matrix<Double> {
  * Returns the adjoint of a square matrix
  * @exception MatrixError.NotSquareMatrix Thrown when the passed matrix is not a square matrix.
  */
-inline fun <reified T: Number> Matrix<T>.adjoint(): Matrix<Double> {
+inline fun <reified T : Number> Matrix<T>.adjoint(): Matrix<Double> {
     return this.cofactorMatrix().transposed()
 }
 
@@ -232,12 +232,47 @@ inline fun <reified T: Number> Matrix<T>.adjoint(): Matrix<Double> {
  * @exception MatrixError.NotSquareMatrix Thrown when the passed matrix is not a square matrix.
  * @exception MatrixError.SingularMatrix Thrown when the passed matrix is a singular matrix.
  */
-inline fun <reified T: Number> Matrix<T>.inverse(): Matrix<Double> {
+inline fun <reified T : Number> Matrix<T>.inverse(): Matrix<Double> {
     val det = this.determinant()
 
     if (det == 0.0)
         throw MatrixError.SingularMatrix()
 
-    return (1/det) * this.adjoint()
+    return (1 / det) * this.adjoint()
+}
+
+/**
+ * Transforms an existing row of a matrix to a new value using a transform function.
+ * This is an In place transformation. The original matrix is modified.
+ * This transformation respects the type of Matrix. ie if the matrix is of type Int, the transform function should return an Int.
+ * @param row The row to transform.
+ * @param transform The transform function. That takes in the current value and returns the new value.
+ * @exception MatrixError.DimensionOutOfBounds Thrown when the passed row index is out of bounds.
+ */
+fun <T : Number> Matrix<T>.transformRow(row: Int, transform: (current: T) -> T) {
+    if (row < 0 || row > this.rows - 1)
+        throw MatrixError.DimensionOutOfBounds()
+
+    for (j in 0 until this.cols) {
+        this[row, j] = transform(this[row, j])
+    }
+}
+
+/**
+ * Transforms an existing row of a matrix to a new value using a transform function. Same as [transformRow] but also takes another row as a parameter.
+ * This is an In place transformation. The original matrix is modified.
+ * This transformation respects the type of Matrix. ie if the matrix is of type Int, the transform function should return an Int.
+ * @param row The row to transform.
+ * @param otherRow The other row to use in the transform function.
+ * @param transform The transform function. That takes in the current value, the other corresponding row value and returns the new value.
+ * @exception MatrixError.DimensionOutOfBounds Thrown when the passed row index is out of bounds.
+ */
+fun <T : Number> Matrix<T>.transformRow(row: Int, otherRow: Int, transform: (current: T, other: T) -> T) {
+    if (row < 0 || row > this.rows - 1 || otherRow < 0 || otherRow > this.rows - 1)
+        throw MatrixError.DimensionOutOfBounds()
+
+    for (j in 0 until this.cols) {
+        this[row, j] = transform(this[row, j], this[otherRow, j])
+    }
 }
 

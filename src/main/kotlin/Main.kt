@@ -7,5 +7,11 @@ fun main() {
     val m2 = Matrix(values2, 4, 4)
     val m3 = Matrix(values3, 3, 3)
 
-    print(1 in m1)
+    print(m1)
+
+   // m1.transformRow(0) { it }
+    m1.transformRow(1, 0) { a,b ->
+        a - b
+    }
+    print(m1)
 }
