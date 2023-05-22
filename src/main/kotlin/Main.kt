@@ -7,7 +7,7 @@ fun main() {
     val m2 = Matrix(values2, 4, 3)
     val m3 = Matrix(values3, 3, 3)
 
-
+    val i1 = Matrix.identityMatrix(3)
     val d1 = Matrix.diagonalMatrix(3, 2.0)
-    println(d1)
+    println(i1)
 }

@@ -180,7 +180,7 @@ inline fun <reified T : Number> Matrix<T>.minorMatrix(): Matrix<Double> {
     if (!this.isSquare())
         throw MatrixError.NotSquareMatrix()
 
-    val m = Matrix.typedMatrixOf(this.rows, this.cols) { 0.0 }
+    val m = Matrix.matrixOf(this.rows, this.cols) { 0.0 }
 
     m.forEachIndexed2d { (i, j), _ ->
         m[i, j] = this.minorAt(i, j)
@@ -211,7 +211,7 @@ inline fun <reified T : Number> Matrix<T>.cofactorMatrix(): Matrix<Double> {
     if (!this.isSquare())
         throw MatrixError.NotSquareMatrix()
 
-    val m = Matrix.typedMatrixOf(this.rows, this.cols) { 0.0 }
+    val m = Matrix.matrixOf(this.rows, this.cols) { 0.0 }
     m.forEachIndexed2d { (i, j), _ ->
         m[i, j] = this.cofactorAt(i, j)
     }

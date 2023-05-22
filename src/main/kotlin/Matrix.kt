@@ -126,28 +126,56 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
     /*--------Matrix Companion Object--------*/
     companion object {
         /**
+         * Converts an index of a 1D array to 2D array indies of the form (i, j)
+         * @param index The index of the 1D array
+         * @param cols The size of the outer array of the 2D array
+         * @return A pair of indices (i, j) of the 2D array
+         */
+        fun convertIndexTo2d(index: Int, cols: Int) = (index / cols) to (index % cols)
+
+        /**
+         * Returns a new [Matrix] of type [E] of the size [noRows] x [noCols] that's filled with elements given by [elements]
+         * @param noRows The number of rows of the matrix
+         * @param noCols The number of columns of the matrix
+         * @param elements The elements to fill the matrix with. The index of the element is passed as an argument.
+         */
+        inline fun <reified E : Number> matrixOf(noRows: Int, noCols: Int, elements: (i: Int) -> E): Matrix<E> {
+            if (noRows <= 0 || noCols <= 0)
+                throw MatrixError.SizeInvalid(note = "Size ($noRows, $noCols) is invalid")
+
+            var count = 0
+            return Matrix(Array(noRows * noCols) { elements(count++) }, noRows, noCols)
+        }
+
+
+        /**
          * Returns a new [Matrix] of type [E] of the size [noRows] x [noCols] that's filled with elements given by [elements]
          * @param noRows The number of rows of the matrix
          * @param noCols The number of columns of the matrix
          * @param elements The elements to fill the matrix with.
          */
-        inline fun <reified E : Number> typedMatrixOf(noRows: Int, noCols: Int, elements: () -> E): Matrix<E> {
+        inline fun <reified E : Number> matrixOfIndexed(noRows: Int, noCols: Int, elements: (i: Int, cord: Pair<Int, Int>) -> E): Matrix<E> {
             if (noRows <= 0 || noCols <= 0)
                 throw MatrixError.SizeInvalid(note = "Size ($noRows, $noCols) is invalid")
 
-            return Matrix(Array(noRows * noCols) { elements() }, noRows, noCols)
+            var count = 0
+            return Matrix(Array(noRows * noCols) {
+                val pair = Matrix.convertIndexTo2d(count, noCols)
+                elements(count++, pair)
+            }, noRows, noCols)
         }
+
 
         /**
          * Returns a new zero matrix of type [Int] thats of the size [noRows] x [noCols].
-         * To get the zero matrix of other types use [typedMatrixOf] with element that returns 0 of that type.
+         * To get the zero matrix of other types use [matrixOf] with element that returns 0 of that type.
          * Or use [Matrix] type converters. Like [Matrix.toIntMatrix] or [Matrix.toDoubleMatrix] etc.
          * @param noRows The number of rows of the matrix.
          * @param noCols The number of columns of the matrix.
          * @return A matrix with all elements as 0 (Int).
          * @exception MatrixError.SizeInvalid Thrown when the size of the matrix is invalid.
          */
-        fun zeroMatrix(noRows: Int, noCols: Int) = typedMatrixOf(noRows, noCols) { 0 }
+        fun zeroMatrix(noRows: Int, noCols: Int) = matrixOf(noRows, noCols) { 0 }
 
         /**
          * Returns the identity matrix of the a given size.
@@ -156,9 +184,8 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
          * @exception MatrixError.SizeInvalid Thrown when the size of the matrix is invalid.
          */
         fun identityMatrix(size: Int): Matrix<Int> {
-            var i = 0
-            return typedMatrixOf(size, size) {
-                if ((i++) % (size + 1) == 0) 1 else 0
+            return matrixOf(size, size) { i ->
+                if ((i) % (size + 1) == 0) 1 else 0
             }
         }
 
@@ -171,9 +198,13 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
          */
         fun diagonalMatrix(size: Int, diagonalElement: Double): Matrix<Double> {
             var i = 0
-            return typedMatrixOf(size, size) {
+            return matrixOf(size, size) {
                 if ((i++) % (size + 1) == 0) diagonalElement else 0.0
             }
         }
+
+//        fun upperTriangleMatrix(size: Int, primary: Double, secondary: Double = 0.0): Matrix<Double> {
+//            val elm
+//        }
     }
 }
