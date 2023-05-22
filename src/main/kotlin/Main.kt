@@ -7,16 +7,7 @@ fun main() {
     val m2 = Matrix(values2, 4, 3)
     val m3 = Matrix(values3, 3, 3)
 
-    print(m2)
-
-//   // m1.transformRow(0) { it }
-//    m1.transformRow(1, 0) { a,b ->
-//        a - b
-//    }
-
-    m2.transformCol(1, 2) { a, b ->
-        a + 3 * b
-    }
-
-    print(m2)
+//
+//    val i1 = Matrix.identityMatrix(0)
+//    print(i1)
 }

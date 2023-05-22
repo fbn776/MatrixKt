@@ -11,6 +11,7 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
      * This is a copy of the passed array as when changing the non-copied array [_m] can change the original array that passed as an argument
      */
     private val _matrix1D = _m.copyOf()
+
     /**Returns the matrix size**/
     val size = rows * cols
 
@@ -130,11 +131,23 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
          * @param noCols The number of columns of the matrix
          * @param elements The elements to fill the matrix with.
          */
-        inline fun <reified E: Number> typedMatrixOf(noRows: Int, noCols: Int, elements: () -> E): Matrix<E> {
-            if(noRows <= 0 || noCols <= 0)
+        inline fun <reified E : Number> typedMatrixOf(noRows: Int, noCols: Int, elements: () -> E): Matrix<E> {
+            if (noRows <= 0 || noCols <= 0)
                 throw MatrixError.SizeInvalid(note = "Size ($noRows, $noCols) is invalid")
 
             return Matrix(Array(noRows * noCols) { elements() }, noRows, noCols)
         }
+
+        /**
+         * Returns a new zero matrix of type [Int] thats of the size [noRows] x [noCols].
+         * To get the zero matrix of other types use [typedMatrixOf] with element that returns 0 of that type.
+         * Or use [Matrix] type converters. Like [Matrix.toIntMatrix] or [Matrix.toDoubleMatrix] etc.
+         * @param noRows The number of rows of the matrix.
+         * @param noCols The number of columns of the matrix.
+         * @return A matrix with all elements as 0 (Int).
+         * @exception MatrixError.SizeInvalid Thrown when the size of the matrix is invalid.
+         */
+        fun zeroMatrix(noRows: Int, noCols: Int) = typedMatrixOf(noRows, noCols) { 0 }
+
     }
 }
