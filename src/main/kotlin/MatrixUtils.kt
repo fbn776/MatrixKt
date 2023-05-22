@@ -113,7 +113,7 @@ inline fun <reified T : Number> Matrix<T>.rowAt(rowNum: Int): Array<T> {
  * @exception MatrixError.DimensionOutOfBounds thrown if the [colNum] is out of bounds.
  */
 inline fun <reified T : Number> Matrix<T>.columnAt(colNum: Int): Array<T> {
-    if (colNum > this.rows - 1 || colNum < 0)
+    if (colNum > this.cols - 1 || colNum < 0)
         throw MatrixError.DimensionOutOfBounds(note = "Column at $colNum does not exist")
 
     val col = Array(this.rows) { this[0, 0] }
