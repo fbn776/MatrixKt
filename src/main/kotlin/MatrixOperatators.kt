@@ -38,7 +38,7 @@ operator fun <T : Number> Matrix<T>.minus(other: Matrix<*>) = this + (-other)
 
 /**
  * Returns the scalar product of the Number * Matrix
- * @returns This returns a matrix of type double
+ * @returns This returns a matrix of type Double
  */
 operator fun Number.times(other: Matrix<*>): Matrix<Double> {
     val matrix = other.getMatrix1D()
@@ -47,6 +47,19 @@ operator fun Number.times(other: Matrix<*>): Matrix<Double> {
         arr[index] = (this.toDouble() * matrix[index].toDouble())
     }
     return Matrix(arr, other.rows, other.cols)
+}
+
+/**
+ * Returns the scalar division of the Matrix / Number
+ * @return Returns a new matrix of type Double.
+ * @exception MatrixError.DivisionByZero Thrown when a Matrix is divided by 0.
+ */
+operator fun <T: Number> Matrix<T>.div(other: Number): Matrix<Double> {
+    val num = other.toDouble()
+    if(num == 0.0)
+        throw MatrixError.DivisionByZero()
+
+    return (1/num) * this
 }
 
 /**
@@ -275,7 +288,6 @@ fun <T : Number> Matrix<T>.transformRow(row: Int, otherRow: Int, transform: (cur
         this[row, j] = transform(this[row, j], this[otherRow, j])
     }
 }
-
 
 /**
  * Transforms an existing column of a matrix to a new value using a transform function.

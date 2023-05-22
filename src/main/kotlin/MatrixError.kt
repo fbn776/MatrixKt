@@ -21,6 +21,8 @@
  * For eg: This is thrown when inverse() is called on a singular matrix.
  * @property TypeNotSame An error that is thrown when two or more arguments passed are of different types.
  * For eg: This is thrown when Matrix.upperTriangleMatrix(3, primary = 3.0, secondary = 2) is used. primary is of [Double] while secondary is of [Int].
+ * @property DivisionByZero An error that is thrown when a matrix is divided by 0.
+ * For eg: Say a matrix m1; m1 / 0 would raise this error.
  * */
 sealed class MatrixError {
     class SizeError(
@@ -62,6 +64,9 @@ sealed class MatrixError {
         Exception(formatMessage(msg, note))
 
     class TypeNotSame(msg: String = "The passed arguments should be of same type", note: String = "") :
+        Exception(formatMessage(msg, note))
+
+    class DivisionByZero(msg: String = "You tried to divide by zero.", note: String = "") :
         Exception(formatMessage(msg, note))
 }
 
