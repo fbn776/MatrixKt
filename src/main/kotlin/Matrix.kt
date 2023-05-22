@@ -149,5 +149,17 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
          */
         fun zeroMatrix(noRows: Int, noCols: Int) = typedMatrixOf(noRows, noCols) { 0 }
 
+        /**
+         * Returns the identity matrix of the a given size.
+         * @param size The size of the identity matrix.
+         * @return The a square matrix/identity of type [Int]
+         * @exception MatrixError.SizeInvalid Thrown when the size of the matrix is invalid.
+         */
+        fun identityMatrix(size: Int): Matrix<Int> {
+            var i = 0
+            return typedMatrixOf(size, size) {
+                if ((i++) % (size + 1) == 0) 1 else 0
+            }
+        }
     }
 }
