@@ -127,7 +127,7 @@ inline fun <reified T : Number> Matrix<T>.columnAt(colNum: Int): Array<T> {
  * Converts a matrix type Int, Float etc. to a matrix of type [Double]
  */
 fun <T : Number> Matrix<T>.toDouble(): Matrix<Double> {
-    val m = Matrix<Double>(Array(this.size) { 0.0 }, this.rows, this.cols)
+    val m = Matrix(Array(this.size) { 0.0 }, this.rows, this.cols)
     this.forEachIndexed2d { (i,j), t ->
         m[i, j] = t.toDouble()
     }
@@ -138,7 +138,7 @@ fun <T : Number> Matrix<T>.toDouble(): Matrix<Double> {
  * Converts a matrix type Int, Float etc. to a matrix of type [Int]
  */
 fun <T : Number> Matrix<T>.toInt(): Matrix<Int> {
-    val m = Matrix<Int>(Array(this.size) { 0 }, this.rows, this.cols)
+    val m = Matrix(Array(this.size) { 0 }, this.rows, this.cols)
     this.forEachIndexed2d { (i,j), t ->
         m[i, j] = t.toInt()
     }
@@ -149,7 +149,7 @@ fun <T : Number> Matrix<T>.toInt(): Matrix<Int> {
  * Converts a matrix type Int, Float etc. to a matrix of type [Float]
  */
 fun <T : Number> Matrix<T>.toFloat(): Matrix<Float> {
-    val m = Matrix<Float>(Array(this.size) { 0f }, this.rows, this.cols)
+    val m = Matrix(Array(this.size) { 0f }, this.rows, this.cols)
     this.forEachIndexed2d { (i,j), t ->
         m[i, j] = t.toFloat()
     }
@@ -160,7 +160,7 @@ fun <T : Number> Matrix<T>.toFloat(): Matrix<Float> {
  * Converts a matrix type Int, Float etc. to a matrix of type [Long]
  */
 fun <T : Number> Matrix<T>.toLong(): Matrix<Long> {
-    val m = Matrix<Long>(Array(this.size) { 0L }, this.rows, this.cols)
+    val m = Matrix(Array(this.size) { 0L }, this.rows, this.cols)
     this.forEachIndexed2d { (i,j), t ->
         m[i, j] = t.toLong()
     }

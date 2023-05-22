@@ -2,21 +2,21 @@
  * Matrix representation class that coronations/represents a single matrix.
  * This class holds the properties of the matrix such and no of rows, columns, size etc.
  * This also holds different operation methods and other matrix methods
- * @param m A 1D [Array] of type uniform [Number] (Non-uniform numbers raise an error)
+ * @param _m A 1D [Array] of type uniform [Number] (Non-uniform numbers raise an error)
  * @param rows The number of rows of the matrix.
  * @param cols The number of columns of the matrix
  */
-class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) : Iterator<T> {
+class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int) : Iterator<T> {
     /**This is the main matrix array. Operations are done on this array.
-     * This is a copy of the passed array as when changing the non-copied array [m] can change the original array that passed as an argument
+     * This is a copy of the passed array as when changing the non-copied array [_m] can change the original array that passed as an argument
      */
-    private val matrix1D = m.copyOf()
+    private val _matrix1D = _m.copyOf()
     /**Returns the matrix size**/
     val size = rows * cols
 
     init {
         //Check if the size of the matrix values is in accordance with the given rows and cols value;
-        if (rows * cols != matrix1D.size) {
+        if (rows * cols != _matrix1D.size) {
             throw MatrixError.SizeError()
         }
     }
@@ -32,7 +32,7 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
         if ((i < 0) || (i > rows - 1) || (j < 0) || (j > cols - 1))
             throw MatrixError.IndexOutOfBound()
 
-        return matrix1D[convert2dToIndex(i, j)]
+        return _matrix1D[convert2dToIndex(i, j)]
     }
 
     /**
@@ -45,7 +45,7 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
         if (i > size || i < 0)
             throw MatrixError.IndexOutOfBound()
 
-        return matrix1D[i]
+        return _matrix1D[i]
     }
 
     /**
@@ -58,15 +58,15 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
         if ((i < 0) || (i > rows - 1) || (j < 0) || (j > cols - 1))
             throw MatrixError.IndexOutOfBound()
 
-        matrix1D[convert2dToIndex(i, j)] = newValue
+        _matrix1D[convert2dToIndex(i, j)] = newValue
         return newValue
     }
 
     /**Returns the 1D matrix array*/
-    fun getMatrix1D() = matrix1D
+    fun getMatrix1D() = _matrix1D
 
     /**Returns the copy of 2D matrix array*/
-    fun getClonedMatrix2D() = matrix1D.copyOf()
+    fun getClonedMatrix2D() = _matrix1D.copyOf()
 
     /**
      * Checks if a [Matrix] and an item is equal or not.
@@ -85,7 +85,7 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
      */
     operator fun contains(other: Any?): Boolean {
         if (other !is Number) return false
-        return other in matrix1D
+        return other in _matrix1D
     }
 
     /**
@@ -96,7 +96,7 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
         for (i in 0 until rows) {
             var rowStr = ""
             for (j in 0 until cols) {
-                rowStr += "${matrix1D[i * cols + j]} "
+                rowStr += "${_matrix1D[i * cols + j]} "
             }
             str += rowStr + '\n'
         }
@@ -104,7 +104,7 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
     }
 
     override fun hashCode(): Int {
-        var result = matrix1D.contentHashCode()
+        var result = _matrix1D.contentHashCode()
         result = 31 * result + rows
         result = 31 * result + cols
         return result
@@ -117,7 +117,7 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
         if (!hasNext())
             throw MatrixError.NoSuchElement()
 
-        val element = matrix1D[currentIndex]
+        val element = _matrix1D[currentIndex]
         currentIndex++
         return element
     }
@@ -125,7 +125,7 @@ class Matrix<T : Number>(private val m: Array<T>, val rows: Int, val cols: Int) 
     /*--------Matrix Companion Object--------*/
     companion object {
         /**
-         * Returns a new [Matrix] of type [E] and size [noRows] x [noCols] abd filled with [elements]
+         * Returns a new [Matrix] of type [E] of the size [noRows] x [noCols] that's filled with elements given by [elements]
          * @param noRows The number of rows of the matrix
          * @param noCols The number of columns of the matrix
          * @param elements The elements to fill the matrix with.

@@ -9,6 +9,10 @@ fun main() {
 
     print(m1)
 
+    values1.forEach {
+
+    }
+
    // m1.transformRow(0) { it }
     m1.transformRow(1, 0) { a,b ->
         a - b

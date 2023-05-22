@@ -43,7 +43,7 @@ operator fun <T : Number> Matrix<T>.minus(other: Matrix<*>) = this + (-other)
 operator fun Number.times(other: Matrix<*>): Matrix<Double> {
     val matrix = other.getMatrix1D()
     val arr = Array(other.size) { 0.0 }
-    arr.forEachIndexed { index, t ->
+    arr.forEachIndexed { index, _ ->
         arr[index] = (this.toDouble() * matrix[index].toDouble())
     }
     return Matrix(arr, other.rows, other.cols)
@@ -197,7 +197,7 @@ inline fun <reified T : Number> Matrix<T>.minorMatrix(): Matrix<Double> {
  * @exception MatrixError.IndexOutOfBound Thrown when the passed index is out of bound.
  */
 inline fun <reified T : Number> Matrix<T>.cofactorAt(i: Int, j: Int): Double {
-    val minorAtIJ = this.minorAt(i, j).toDouble()
+    val minorAtIJ = this.minorAt(i, j)
 
     return (-1.0).pow(i + j) * minorAtIJ
 }
