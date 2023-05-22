@@ -138,6 +138,7 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
          * @param noRows The number of rows of the matrix
          * @param noCols The number of columns of the matrix
          * @param elements The elements to fill the matrix with. The index of the element is passed as an argument.
+         * @exception MatrixError.SizeInvalid Thrown when the size of the matrix is invalid.
          */
         inline fun <reified E : Number> matrixOf(noRows: Int, noCols: Int, elements: (i: Int) -> E): Matrix<E> {
             if (noRows <= 0 || noCols <= 0)
@@ -147,12 +148,13 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
             return Matrix(Array(noRows * noCols) { elements(count++) }, noRows, noCols)
         }
 
-
         /**
          * Returns a new [Matrix] of type [E] of the size [noRows] x [noCols] that's filled with elements given by [elements]
-         * @param noRows The number of rows of the matrix
+         * This does the same stuff as [Matrix.matrixOf] but this has an additional parameter, the 2D index as [Pair] of [Int] which is the 2D coordinate of an element at n-th position.
+         * Thats passed to the [elements] param along with the current index.
          * @param noCols The number of columns of the matrix
-         * @param elements The elements to fill the matrix with.
+         * @param elements The elements to fill the matrix with. The index of the element and the 2D index of the element is passed as an argument.
+         * @exception MatrixError.SizeInvalid Thrown when the size of the matrix is invalid.
          */
         inline fun <reified E : Number> matrixOfIndexed(noRows: Int, noCols: Int, elements: (i: Int, cord: Pair<Int, Int>) -> E): Matrix<E> {
             if (noRows <= 0 || noCols <= 0)
@@ -164,7 +166,6 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
                 elements(count++, pair)
             }, noRows, noCols)
         }
-
 
         /**
          * Returns a new zero matrix of type [Int] thats of the size [noRows] x [noCols].
@@ -203,8 +204,40 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
             }
         }
 
-//        fun upperTriangleMatrix(size: Int, primary: Double, secondary: Double = 0.0): Matrix<Double> {
-//            val elm
-//        }
+        /**
+         * Generates a square matrix of size [size] which in the shape of an upper trainagle. The upper half is filled with [primary] and the lower is filled with [secondary]
+         * @param size The size of the Matrix
+         * @param primary The number to be filled up top
+         * @param secondary The number to be filled at the bottom half
+         * @return A square matrix of type [E]
+         * @exception MatrixError.SizeInvalid Thrown when the size of the matrix is invalid.
+         * @exception MatrixError.TypeNotSame Thrown when the type of both [primary] and [secondary] are not same. For eg: [primary] is [Double] and [secondary] is [Float]
+         */
+        inline fun <reified E: Number> upperTriangleMatrix(size: Int, primary: E, secondary: E): Matrix<E> {
+            if(primary.javaClass != secondary.javaClass)
+                throw MatrixError.TypeNotSame()
+
+            return Matrix.matrixOfIndexed(size, size) {_, (i,j) ->
+                if(i <= j) primary else secondary
+            }
+        }
+
+        /**
+         * Generates a square matrix of size [size] which in the shape of an lower trainagle. The lower half is filled with [primary] while the upper half is filled with [secondary]
+         * @param size The size of the Matrix
+         * @param primary The number to be filled at the bottom half
+         * @param secondary The number to be filled at the top half
+         * @return A square matrix of type [E]
+         * @exception MatrixError.SizeInvalid Thrown when the size of the matrix is invalid.
+         * @exception MatrixError.TypeNotSame Thrown when the type of both [primary] and [secondary] are not same. For eg: [primary] is [Double] and [secondary] is [Float]
+         */
+        inline fun <reified E: Number> lowerTriangleMatrix(size: Int, primary: E, secondary: E): Matrix<E> {
+            if(primary.javaClass != secondary.javaClass)
+                throw MatrixError.TypeNotSame()
+
+            return Matrix.matrixOfIndexed(size, size) {_, (i,j) ->
+                if(i >= j) primary else secondary
+            }
+        }
     }
 }

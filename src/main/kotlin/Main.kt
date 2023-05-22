@@ -7,7 +7,9 @@ fun main() {
     val m2 = Matrix(values2, 4, 3)
     val m3 = Matrix(values3, 3, 3)
 
-    val i1 = Matrix.identityMatrix(3)
-    val d1 = Matrix.diagonalMatrix(3, 2.0)
+    val i1 = Matrix.upperTriangleMatrix(3, 1.0, 0.0)
     println(i1)
+
+    val i2 = Matrix.lowerTriangleMatrix(3, 1f, 0f)
+    println(i2)
 }
