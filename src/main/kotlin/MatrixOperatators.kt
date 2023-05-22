@@ -334,11 +334,11 @@ fun <T : Number> Matrix<T>.swapRow(row1: Int, row2: Int) {
     if (row1 < 0 || row1 > this.rows - 1 || row2 < 0 || row2 > this.rows - 1)
         throw MatrixError.DimensionOutOfBounds()
 
-        for (j in 0 until this.rows) {
-            val temp = this[row1, j]
-            this[row1, j] = this[row2, j]
-            this[row2, j] = temp
-        }
+    for (j in 0 until this.rows) {
+        val temp = this[row1, j]
+        this[row1, j] = this[row2, j]
+        this[row2, j] = temp
+    }
 }
 
 /**
@@ -358,3 +358,66 @@ fun <T : Number> Matrix<T>.swapCol(col1: Int, col2: Int) {
     }
 }
 
+/**
+ * For finding the row-echelon form of a matrix. The algorithm used is 'handmade', this may not be the best way to find the row-echelon  (or it might be) but it gets the job done.
+ * @return A row-echelon [Matrix] of type [Double] and of the same size as the original matrix
+ */
+fun <T : Number> Matrix<T>.rowEchelonOf(): Matrix<Double> {
+    val m = this.toDouble()
+
+    //Loop from left most column to right most column
+    var lastPivotIndex = 0
+    for (i in 0 until m.cols) {
+        var currCol = m.columnAt(i)
+        //If the pivot element is zero; then swap rows until pivot is longer 0
+        if (currCol[lastPivotIndex] == 0.0) {
+            var a = lastPivotIndex
+            while (a < currCol.size) {
+                if (currCol[a] != 0.0) {
+                    m.swapRow(lastPivotIndex, a)
+                    //update the currCol when the rows are swapped
+                    currCol = m.columnAt(i)
+                    break
+                }
+                a++
+            }
+        }
+
+        //If It's still 0; then skip this column, as it a zero column
+        if (currCol[0] == 0.0 || currCol[lastPivotIndex] == 0.0)
+            continue
+
+        //Else get the current column value from the last pivot to no of rows.
+        currCol = Array(this.rows - lastPivotIndex) { 0.0 }
+        //Get the rest of column elements from i; where i-1 is the last pivot element index.
+        for (restRow in lastPivotIndex until this.rows) {
+            currCol[restRow - lastPivotIndex] = m[restRow, lastPivotIndex]
+        }
+
+        //For elements after the pivot element in the current col (currCol)
+        val pivotElement = currCol[0]
+        //For making each element under the pivot element 0;
+        for(j in 1 until currCol.size) {
+            val currElm = currCol[j]
+            //if the current element is 0, then skip (if not skipped a 0/0
+            if(currElm == 0.0)
+                continue
+
+            val ratio = currElm / pivotElement
+            /**
+             * Transform the current row of `m` using the transformation;
+             * Rc -> Rc + nRp
+             * Where Rc is the current row (c is the current row number; `c = lastPivotIndex + j`)
+             * n is the ratio. (element of Rc/Rp) ie current row value by pivot row value
+             * Rp is the pivot row (p is the pivot row number; `p = lastPivotIndex`)
+             */
+            m.transformRow(j + lastPivotIndex, lastPivotIndex) { a, b ->
+                a - (ratio * b)
+            }
+        }
+
+        lastPivotIndex++
+    }
+
+    return m
+}
