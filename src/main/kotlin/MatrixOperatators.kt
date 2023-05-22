@@ -54,12 +54,12 @@ operator fun Number.times(other: Matrix<*>): Matrix<Double> {
  * @return Returns a new matrix of type Double.
  * @exception MatrixError.DivisionByZero Thrown when a Matrix is divided by 0.
  */
-operator fun <T: Number> Matrix<T>.div(other: Number): Matrix<Double> {
+operator fun <T : Number> Matrix<T>.div(other: Number): Matrix<Double> {
     val num = other.toDouble()
-    if(num == 0.0)
+    if (num == 0.0)
         throw MatrixError.DivisionByZero()
 
-    return (1/num) * this
+    return (1 / num) * this
 }
 
 /**
@@ -321,6 +321,40 @@ fun <T : Number> Matrix<T>.transformCol(col: Int, otherCol: Int, transform: (cur
 
     for (j in 0 until this.rows) {
         this[j, col] = transform(this[j, col], this[j, otherCol])
+    }
+}
+
+/**
+ * Swaps two rows [row1] and [row2] in place.
+ * @param row1 The index of 1st row to swap
+ * @param row2 The index of 2nd row to swap
+ * @exception MatrixError.DimensionOutOfBounds Thrown when the given row index is out of bounds.
+ */
+fun <T : Number> Matrix<T>.swapRow(row1: Int, row2: Int) {
+    if (row1 < 0 || row1 > this.rows - 1 || row2 < 0 || row2 > this.rows - 1)
+        throw MatrixError.DimensionOutOfBounds()
+
+        for (j in 0 until this.rows) {
+            val temp = this[row1, j]
+            this[row1, j] = this[row2, j]
+            this[row2, j] = temp
+        }
+}
+
+/**
+ * Swaps two columns [col1] and [col2] in place.
+ * @param col1 The index of 1st column to swap
+ * @param col2 The index of 2nd column to swap
+ * @exception MatrixError.DimensionOutOfBounds Thrown when the given col index is out of bounds.
+ */
+fun <T : Number> Matrix<T>.swapCol(col1: Int, col2: Int) {
+    if (col1 < 0 || col1 > this.cols - 1 || col2 < 0 || col2 > this.cols - 1)
+        throw MatrixError.DimensionOutOfBounds()
+
+    for (i in 0 until this.cols) {
+        val temp = this[i, col1]
+        this[i, col1] = this[i, col2]
+        this[i, col2] = temp
     }
 }
 

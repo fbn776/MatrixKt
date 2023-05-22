@@ -7,5 +7,8 @@ fun main() {
     val m2 = Matrix(values2, 4, 3)
     val m3 = Matrix(values3, 3, 3)
 
-    println(10/0)
+
+    println(m1)
+    m1.swapCol(2,1)
+    println(m1)
 }
