@@ -276,3 +276,39 @@ fun <T : Number> Matrix<T>.transformRow(row: Int, otherRow: Int, transform: (cur
     }
 }
 
+
+/**
+ * Transforms an existing column of a matrix to a new value using a transform function.
+ * This is an In place transformation. The original matrix is modified.
+ * This transformation respects the type of Matrix. ie if the matrix is of type Int, the transform function should return an Int.
+ * @param col The column to transform.
+ * @param transform The transform function. That takes in the current value and returns the new value.
+ * @exception MatrixError.DimensionOutOfBounds Thrown when the passed row index is out of bounds.
+ */
+fun <T : Number> Matrix<T>.transformCol(col: Int, transform: (current: T) -> T) {
+    if (col < 0 || col > this.cols - 1)
+        throw MatrixError.DimensionOutOfBounds()
+
+    for (j in 0 until this.rows) {
+        this[j, col] = transform(this[j, col])
+    }
+}
+
+/**
+ * Transforms an existing column of a matrix to a new value using a transform function. Same as [transformCol] but also takes another column as a parameter.
+ * This is an in place transformation. The original matrix is modified.
+ * This transformation respects the type of Matrix. ie if the matrix is of type Int, the transform function should return an Int.
+ * @param col The column to transform.
+ * @param otherCol The other column to use in the transform function.
+ * @param transform The transform function. That takes in the current value, the other corresponding column value and returns the new value.
+ * @exception MatrixError.DimensionOutOfBounds Thrown when the passed row index is out of bounds.
+ */
+fun <T : Number> Matrix<T>.transformCol(col: Int, otherCol: Int, transform: (current: T, other: T) -> T) {
+    if (col < 0 || col > this.cols - 1 || otherCol < 0 || otherCol > this.cols - 1)
+        throw MatrixError.DimensionOutOfBounds()
+
+    for (j in 0 until this.rows) {
+        this[j, col] = transform(this[j, col], this[j, otherCol])
+    }
+}
+
