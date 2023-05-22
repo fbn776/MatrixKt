@@ -4,11 +4,10 @@ fun main() {
     val values3 = arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9)
 
     val m1 = Matrix(values1, 3, 3)
-    val m2 = Matrix(values2, 4, 3)
+    val m2 = Matrix(values2, 4, 3).transposed()
     val m3 = Matrix(values3, 3, 3)
 
     println(m2)
-    val r1 = m2.rowEchelonOf()
-
-    println(r1)
+    val c1 = m2.colEchelonOf()
+    println("Row is: $c1\nCol is: ")
 }

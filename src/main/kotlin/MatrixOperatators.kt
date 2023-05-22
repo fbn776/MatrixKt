@@ -368,6 +368,7 @@ fun <T : Number> Matrix<T>.rowEchelonOf(): Matrix<Double> {
     //Loop from left most column to right most column
     var lastPivotIndex = 0
     for (i in 0 until m.cols) {
+
         var currCol = m.columnAt(i)
         //If the pivot element is zero; then swap rows until pivot is longer 0
         if (currCol[lastPivotIndex] == 0.0) {
@@ -387,12 +388,17 @@ fun <T : Number> Matrix<T>.rowEchelonOf(): Matrix<Double> {
         if (currCol[0] == 0.0 || currCol[lastPivotIndex] == 0.0)
             continue
 
+
         //Else get the current column value from the last pivot to no of rows.
         currCol = Array(this.rows - lastPivotIndex) { 0.0 }
         //Get the rest of column elements from i; where i-1 is the last pivot element index.
         for (restRow in lastPivotIndex until this.rows) {
             currCol[restRow - lastPivotIndex] = m[restRow, lastPivotIndex]
         }
+
+        //Break out if the size of elements(elements in currCol) that can be changed is = 1 (1 because, the 1 element in currCol is pivot element, it can't be changed)
+        if(currCol.size == 1)
+            break
 
         //For elements after the pivot element in the current col (currCol)
         val pivotElement = currCol[0]
@@ -421,3 +427,11 @@ fun <T : Number> Matrix<T>.rowEchelonOf(): Matrix<Double> {
 
     return m
 }
+
+/**
+ * For finding the column-echelon form of a matrix.
+ * The column-echelon is found by taking the matrix and finding the [transposed] of that matrix, then finding the [rowEchelonOf] of the transposed. Then the result is again transposed and returned.
+ * > **Note**: The col-echelon requires more operations, as two transposed operations + the row echelon is carried out. Prefer [rowEchelonOf] over [colEchelonOf]
+ * @return A row-echelon [Matrix] of type [Double] and of the same size as the original matrix
+ */
+fun <T: Number> Matrix<T>.colEchelonOf() = this.transposed().rowEchelonOf().transposed()
