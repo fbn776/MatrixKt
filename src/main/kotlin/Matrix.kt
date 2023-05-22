@@ -161,5 +161,19 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
                 if ((i++) % (size + 1) == 0) 1 else 0
             }
         }
+
+        /**
+         * This returns a new square matrix of size [size] all the all the diagonal elements as [diagonalElement], rest as 0.0. This
+         * @param size The size of the matrix.
+         * @param diagonalElement The value of the diagonal elements. (Its a double because of diffculties in type conversion for generic types)
+         * @return A square(size×size) matrix of type [Double] with all diagonal elements as [diagonalElement] and rest as 0.0
+         * @exception MatrixError.SizeInvalid Thrown when the size of the matrix is invalid.
+         */
+        fun diagonalMatrix(size: Int, diagonalElement: Double): Matrix<Double> {
+            var i = 0
+            return typedMatrixOf(size, size) {
+                if ((i++) % (size + 1) == 0) diagonalElement else 0.0
+            }
+        }
     }
 }

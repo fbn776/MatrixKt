@@ -8,6 +8,6 @@ fun main() {
     val m3 = Matrix(values3, 3, 3)
 
 
-    val i1 = Matrix.identityMatrix(0)
-    print(i1)
+    val d1 = Matrix.diagonalMatrix(3, 2.0)
+    println(d1)
 }
