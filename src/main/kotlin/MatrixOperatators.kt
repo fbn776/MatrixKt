@@ -364,7 +364,6 @@ fun <T : Number> Matrix<T>.swapCol(col1: Int, col2: Int) {
  */
 fun <T : Number> Matrix<T>.rowEchelonOf(): Matrix<Double> {
     val m = this.toDouble()
-
     //Loop from left most column to right most column
     var lastPivotIndex = 0
     for (i in 0 until m.cols) {
@@ -387,7 +386,6 @@ fun <T : Number> Matrix<T>.rowEchelonOf(): Matrix<Double> {
         //If It's still 0; then skip this column, as it a zero column
         if (currCol[0] == 0.0 || currCol[lastPivotIndex] == 0.0)
             continue
-
 
         //Else get the current column value from the last pivot to no of rows.
         currCol = Array(this.rows - lastPivotIndex) { 0.0 }
@@ -435,3 +433,19 @@ fun <T : Number> Matrix<T>.rowEchelonOf(): Matrix<Double> {
  * @return A row-echelon [Matrix] of type [Double] and of the same size as the original matrix
  */
 fun <T: Number> Matrix<T>.colEchelonOf() = this.transposed().rowEchelonOf().transposed()
+
+fun <T: Number> Matrix<T>.rank(): Int {
+    val echelon = this.rowEchelonOf()
+    var rank = 0
+    for(i in 0 until echelon.rows) {
+        val row = echelon.rowAt(i)
+
+        for(i in row) {
+            if(i != 0.0) {
+                rank ++
+                break
+            }
+        }
+    }
+    return rank
+}
