@@ -20,6 +20,7 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
         if (rows * cols != _matrix1D.size) {
             throw MatrixError.SizeError()
         }
+
     }
 
     /*--------General methods/properties--------*/
@@ -30,7 +31,7 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
      * @return This returns the value of the matrix at (i, j)
      */
     operator fun get(i: Int, j: Int): T {
-        if ((i < 0) || (i > rows - 1) || (j < 0) || (j > cols - 1))
+        if ((i < 0) || (i > this.rows - 1) || (j < 0) || (j > this.cols - 1))
             throw MatrixError.IndexOutOfBound()
 
         return _matrix1D[convert2dToIndex(i, j)]
@@ -113,11 +114,18 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
 
     /*--------Matrix Iterator--------*/
     private var currentIndex = 0
-    override fun hasNext() = (currentIndex < size)
-    override fun next(): T {
-        if (!hasNext())
-            throw MatrixError.NoSuchElement()
+    override fun hasNext(): Boolean {
+        val temp = (currentIndex < size)
+        //Reset the current index if current index runs out of the bounds.
+        if(!temp)
+            currentIndex = 0
 
+        return temp
+    }
+    override fun next(): T {
+        if (!hasNext()) {
+            throw MatrixError.NoSuchElement()
+        }
         val element = _matrix1D[currentIndex]
         currentIndex++
         return element
