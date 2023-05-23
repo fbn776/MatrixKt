@@ -20,7 +20,6 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
         if (rows * cols != _matrix1D.size) {
             throw MatrixError.SizeError()
         }
-
     }
 
     /*--------General methods/properties--------*/
@@ -126,9 +125,7 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
         if (!hasNext()) {
             throw MatrixError.NoSuchElement()
         }
-        val element = _matrix1D[currentIndex]
-        currentIndex++
-        return element
+        return _matrix1D[currentIndex++]
     }
 
     /*--------Matrix Companion Object--------*/
