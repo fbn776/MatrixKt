@@ -34,14 +34,13 @@ If there isnt an operation you want the library also provides stuff like:
 The main matrix code is in
 ```
 src
-    main
-        kotlin
-            Matrix.kt
-            MatrixOperatators.kt
-            MatrixUtils.kt
-            MatrixError.kt
-            
-            Test.kt
+|---main
+    |---kotlin
+        |---Matrix.kt
+        |---MatrixOperatators.kt
+        |---MatrixUtils.kt
+        |---MatrixError.kt
+        |---Test.kt
 ```
 `Matrix.kt` is the main file. It contains the actual matrix class.<br>
 `MatrixOperatators.kt` contains the matrix operators code.<br>
@@ -59,8 +58,14 @@ This creates a 2x2 matrix of the form;
 1 2
 3 4
 ```
+The `Matrix` class takes in 3 parameters, all of which are required.<br>
+The first parameter is the values/elements of matrix itself. This is a 1D uniform `Array` with size of `rows * cols`<br>
+The second is the number of rows of the matrix.<br>
+The third is the number of columns of the matrix.<br>
 
-For getting values like the number of rows, columns, size, elemenet at (i,j) etc. Use;
+    Note: If the no of rows and cols doesn't match the size of the array. An error is thrown
+
+For getting values like the number of rows, columns, size, element at (i,j) etc. Use;
 ```kotlin
 //Number of rows of the matrix
 val rows = matrix1.rows //2
@@ -73,5 +78,35 @@ val a11 = matrix1[1,1] //4
 ```
 
     note: The matrix index start (i,j) starts at (0,0) and extends to (rows-1, cols-1)
+
+The matrix elements can be accessed by using i,j pair. ie element at (i,j) is `matrix1[i, j]`
+For setting a values, use the same;
+```kotlin
+//Set the element at (1,1) to 10
+matrix1[1, 1] = 7
+println(matrix1)
+/*Prints:
+1 2
+3 7
+*/
+```
+    Note: Matrix are mutable.
+
+### Basic Operations
+For addition use `+`, for subtraction use `-`, for multiplication use `/`
+Example:
+```kotlin
+val m1 = Matrix(arrayOf(1,2,3,4), 2, 2)
+val m2 = Matrix(arrayOf(5,6,7,8), 2, 2)
+
+val add = m1 + m2
+val sub = m1 - m2
+val mult = m1 * m3
+val scalarMult = 2 * m1
+val scalarDiv = m1 / 2
+```
+
+Operations are as simple as this!
+
 
 
