@@ -22,7 +22,7 @@ This library supports almost all the basics matrix operations. The following are
 * Echelon forms
 * Rank
 
-If there isnt an operation you want the library also provides stuff like:
+If there isn't an operation you want the library also provides stuff like:
 * Individual row/column getters
 * Row/column transforms
 * Row/column swapping
