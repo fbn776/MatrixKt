@@ -70,5 +70,9 @@ Here `C` holds the matrix sum of `A` and `B`<br>
 
 Operations are as simple as this!
 
+You can also do stuff like finding the transpose, minor matrix, cofactor, adjoint, determinant, row and column transforms, rank etc.
+
+For the full docs read .....
+
 
 
