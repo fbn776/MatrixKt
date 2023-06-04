@@ -1,15 +1,17 @@
+package matrix
+
 import kotlin.math.pow
 
 /**
  * Returns the sum of two matrices of same size.
- * The resultant is a Matrix<Double> type. This is due to difficulties in finding the types of passed matrices.
+ * The resultant is a Matrix.Matrix<Double> type. This is due to difficulties in finding the types of passed matrices.
  * One way to solve this would be function overloading.
  * But the issue is code size increases (ie there is a need for separate function for Int + Int, Int + Float. Int + Double and so on combinations).
  * And also if this function is implemented as an overloaded function then other functions for other operators should be too. So much typing.
  * I guess I'm lazy (could probably be stupid too, I cant find any other way to do this) (This is a very terrible way to do things)
  * @param other The other matrix
  * @exception MatrixError.NotSameSizeMatrix This error is raised when the passed matrix is not of the same size.
- * @return returns a [Matrix] of Double Type.
+ * @return returns a [matrix] of Double Type.
  */
 operator fun <T : Number> Matrix<T>.plus(other: Matrix<*>): Matrix<Double> {
     if (!this.isOfSameSize(other))
@@ -37,7 +39,7 @@ operator fun <T : Number> Matrix<T>.unaryMinus() = (-1 * this)
 operator fun <T : Number> Matrix<T>.minus(other: Matrix<*>) = this + (-other)
 
 /**
- * Returns the scalar product of the Number * Matrix
+ * Returns the scalar product of the Number * Matrix.Matrix
  * @returns This returns a matrix of type Double
  */
 operator fun Number.times(other: Matrix<*>): Matrix<Double> {
@@ -50,9 +52,9 @@ operator fun Number.times(other: Matrix<*>): Matrix<Double> {
 }
 
 /**
- * Returns the scalar division of the Matrix / Number
+ * Returns the scalar division of the Matrix.Matrix / Number
  * @return Returns a new matrix of type Double.
- * @exception MatrixError.DivisionByZero Thrown when a Matrix is divided by 0.
+ * @exception MatrixError.DivisionByZero Thrown when a Matrix.Matrix is divided by 0.
  */
 operator fun <T : Number> Matrix<T>.div(other: Number): Matrix<Double> {
     val num = other.toDouble()
@@ -63,7 +65,7 @@ operator fun <T : Number> Matrix<T>.div(other: Number): Matrix<Double> {
 }
 
 /**
- * Returns the cross product of two matrices as new Matrix
+ * Returns the cross product of two matrices as new Matrix.Matrix
  * @return The cross product of two matrices and returns a new matrix.
  * @exception MatrixError.MultiplicationDimensionError This error is thrown if the number of columns of 1st matrix doesn't match number of rows of 2nd matrix
  */
@@ -186,7 +188,7 @@ inline fun <reified T : Number> Matrix<T>.minorAt(i: Int, j: Int): Double {
 
 /**
  * Returns the minor matrix of a square matrix
- * @return the minor matrix as Matrix<Double>.
+ * @return the minor matrix as Matrix.Matrix<Double>.
  * @exception MatrixError.NotSquareMatrix Thrown when the passed matrix is not a square matrix (For finding the determinant, a square matrix is required).
  */
 inline fun <reified T : Number> Matrix<T>.minorMatrix(): Matrix<Double> {
@@ -217,7 +219,7 @@ inline fun <reified T : Number> Matrix<T>.cofactorAt(i: Int, j: Int): Double {
 
 /**
  * Returns the cofactor matrix of a square matrix
- * @return the cofactor matrix as Matrix<Double>.
+ * @return the cofactor matrix as Matrix.Matrix<Double>.
  * @exception MatrixError.NotSquareMatrix Thrown when the passed matrix is not a square matrix (For finding the determinant, a square matrix is required).
  */
 inline fun <reified T : Number> Matrix<T>.cofactorMatrix(): Matrix<Double> {
@@ -241,7 +243,7 @@ inline fun <reified T : Number> Matrix<T>.adjoint(): Matrix<Double> {
 
 /**
  * Returns the inverse of a square matrix
- * @return the inverse of the given matrix as Matrix<Double>.
+ * @return the inverse of the given matrix as Matrix.Matrix<Double>.
  * @exception MatrixError.NotSquareMatrix Thrown when the passed matrix is not a square matrix.
  * @exception MatrixError.SingularMatrix Thrown when the passed matrix is a singular matrix.
  */
@@ -257,7 +259,7 @@ inline fun <reified T : Number> Matrix<T>.inverse(): Matrix<Double> {
 /**
  * Transforms an existing row of a matrix to a new value using a transform function.
  * This is an In place transformation. The original matrix is modified.
- * This transformation respects the type of Matrix. ie if the matrix is of type Int, the transform function should return an Int.
+ * This transformation respects the type of Matrix.Matrix. ie if the matrix is of type Int, the transform function should return an Int.
  * @param row The row to transform.
  * @param transform The transform function. That takes in the current value and returns the new value.
  * @exception MatrixError.DimensionOutOfBounds Thrown when the passed row index is out of bounds.
@@ -274,7 +276,7 @@ fun <T : Number> Matrix<T>.transformRow(row: Int, transform: (current: T) -> T) 
 /**
  * Transforms an existing row of a matrix to a new value using a transform function. Same as [transformRow] but also takes another row as a parameter.
  * This is an In place transformation. The original matrix is modified.
- * This transformation respects the type of Matrix. ie if the matrix is of type Int, the transform function should return an Int.
+ * This transformation respects the type of Matrix.Matrix. ie if the matrix is of type Int, the transform function should return an Int.
  * @param row The row to transform.
  * @param otherRow The other row to use in the transform function.
  * @param transform The transform function. That takes in the current value, the other corresponding row value and returns the new value.
@@ -292,7 +294,7 @@ fun <T : Number> Matrix<T>.transformRow(row: Int, otherRow: Int, transform: (cur
 /**
  * Transforms an existing column of a matrix to a new value using a transform function.
  * This is an In place transformation. The original matrix is modified.
- * This transformation respects the type of Matrix. ie if the matrix is of type Int, the transform function should return an Int.
+ * This transformation respects the type of Matrix.Matrix. ie if the matrix is of type Int, the transform function should return an Int.
  * @param col The column to transform.
  * @param transform The transform function. That takes in the current value and returns the new value.
  * @exception MatrixError.DimensionOutOfBounds Thrown when the passed row index is out of bounds.
@@ -309,7 +311,7 @@ fun <T : Number> Matrix<T>.transformCol(col: Int, transform: (current: T) -> T) 
 /**
  * Transforms an existing column of a matrix to a new value using a transform function. Same as [transformCol] but also takes another column as a parameter.
  * This is an in place transformation. The original matrix is modified.
- * This transformation respects the type of Matrix. ie if the matrix is of type Int, the transform function should return an Int.
+ * This transformation respects the type of Matrix.Matrix. ie if the matrix is of type Int, the transform function should return an Int.
  * @param col The column to transform.
  * @param otherCol The other column to use in the transform function.
  * @param transform The transform function. That takes in the current value, the other corresponding column value and returns the new value.
@@ -360,7 +362,7 @@ fun <T : Number> Matrix<T>.swapCol(col1: Int, col2: Int) {
 
 /**
  * For finding the row-echelon form of a matrix. The algorithm used is 'handmade', this may not be the best way to find the row-echelon  (or it might be) but it gets the job done.
- * @return A row-echelon [Matrix] of type [Double] and of the same size as the original matrix
+ * @return A row-echelon [matrix] of type [Double] and of the same size as the original matrix
  */
 fun <T : Number> Matrix<T>.rowEchelonOf(): Matrix<Double> {
     val m = this.toDouble()
@@ -430,7 +432,7 @@ fun <T : Number> Matrix<T>.rowEchelonOf(): Matrix<Double> {
  * For finding the column-echelon form of a matrix.
  * The column-echelon is found by taking the matrix and finding the [transposed] of that matrix, then finding the [rowEchelonOf] of the transposed. Then the result is again transposed and returned.
  * > **Note**: The col-echelon requires more operations, as two transposed operations + the row echelon is carried out. Prefer [rowEchelonOf] over [colEchelonOf]
- * @return A row-echelon [Matrix] of type [Double] and of the same size as the original matrix
+ * @return A row-echelon [matrix] of type [Double] and of the same size as the original matrix
  */
 fun <T: Number> Matrix<T>.colEchelonOf() = this.transposed().rowEchelonOf().transposed()
 

@@ -1,3 +1,5 @@
+import matrix.*
+
 fun main() {
     val x = arrayOf(1,2,3,4,5,6,7,8,9)
     val m1 = Matrix(x, 3, 3)
@@ -7,5 +9,9 @@ fun main() {
 
 
     val m3 = m1 + m2
+    val m4 = m1 - m2
+    val m5 = m1 * m2
+    val m6 = m1 / 6
+
     print(m3)
 }

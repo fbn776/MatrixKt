@@ -1,8 +1,10 @@
+package matrix
+
 /**An error container class that contains all the Errors the library can throw out.
  * @property SizeError An error that is thrown when the size of the matrix does not match the row and column count.
  * For eg: This is thrown when a 3x3 matrix is initialized with a 4x4 array.
  * @property IndexOutOfBound An error that is thrown when the index given is out of bounds.
- * For eg: This is thrown when Matrix.get(4,4) is called on a 3x3 or lower matrix.
+ * For eg: This is thrown when Matrix.Matrix.get(4,4) is called on a 3x3 or lower matrix.
  * @property NotSameSizeMatrix An Error that is thrown when the matrices are not of same size.
  * For eg: This is thrown when addition is performed on a 2x3 and 3x2 matrix.
  * @property MultiplicationDimensionError An error that is thrown when the number of columns of 1st matrix doesn't match number of rows of 2nd matrix.
@@ -20,7 +22,7 @@
  * @property SingularMatrix An error that is thrown when the matrix is singular.
  * For eg: This is thrown when inverse() is called on a singular matrix.
  * @property TypeNotSame An error that is thrown when two or more arguments passed are of different types.
- * For eg: This is thrown when Matrix.upperTriangleMatrix(3, primary = 3.0, secondary = 2) is used. primary is of [Double] while secondary is of [Int].
+ * For eg: This is thrown when Matrix.Matrix.upperTriangleMatrix(3, primary = 3.0, secondary = 2) is used. primary is of [Double] while secondary is of [Int].
  * @property DivisionByZero An error that is thrown when a matrix is divided by 0.
  * For eg: Say a matrix m1; m1 / 0 would raise this error.
  * */

@@ -1,5 +1,7 @@
+package matrix
+
 /**
- * Matrix representation class that coronations/represents a single matrix.
+ * Matrix.Matrix representation class that coronations/represents a single matrix.
  * This class holds the properties of the matrix such and no of rows, columns, size etc.
  * This also holds different operation methods and other matrix methods
  * @param _m A 1D [Array] of type uniform [Number] (Non-uniform numbers raise an error)
@@ -70,7 +72,7 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
     fun getClonedMatrix2D() = _matrix1D.copyOf()
 
     /**
-     * Checks if a [Matrix] and an item is equal or not.
+     * Checks if a [matrix] and an item is equal or not.
      */
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -81,7 +83,7 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
     }
 
     /**
-     * Checks if a [Matrix] contains an item or not.
+     * Checks if a [matrix] contains an item or not.
      * @return true if the item is present in the matrix, false otherwise.
      */
     operator fun contains(other: Any?): Boolean {
@@ -111,7 +113,7 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
         return result
     }
 
-    /*--------Matrix Iterator--------*/
+    /*--------Matrix.Matrix Iterator--------*/
     private var currentIndex = 0
     override fun hasNext(): Boolean {
         val temp = (currentIndex < size)
@@ -128,7 +130,7 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
         return _matrix1D[currentIndex++]
     }
 
-    /*--------Matrix Companion Object--------*/
+    /*--------Matrix.Matrix Companion Object--------*/
     companion object {
         /**
          * Converts an index of a 1D array to 2D array indies of the form (i, j)
@@ -139,7 +141,7 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
         fun convertIndexTo2d(index: Int, cols: Int) = (index / cols) to (index % cols)
 
         /**
-         * Returns a new [Matrix] of type [E] of the size [noRows] x [noCols] that's filled with elements given by [elements]
+         * Returns a new [matrix] of type [E] of the size [noRows] x [noCols] that's filled with elements given by [elements]
          * @param noRows The number of rows of the matrix
          * @param noCols The number of columns of the matrix
          * @param elements The elements to fill the matrix with. The index of the element is passed as an argument.
@@ -154,8 +156,8 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
         }
 
         /**
-         * Returns a new [Matrix] of type [E] of the size [noRows] x [noCols] that's filled with elements given by [elements]
-         * This does the same stuff as [Matrix.matrixOf] but this has an additional parameter, the 2D index as [Pair] of [Int] which is the 2D coordinate of an element at n-th position.
+         * Returns a new [matrix] of type [E] of the size [noRows] x [noCols] that's filled with elements given by [elements]
+         * This does the same stuff as [matrix.matrixOf] but this has an additional parameter, the 2D index as [Pair] of [Int] which is the 2D coordinate of an element at n-th position.
          * Thats passed to the [elements] param along with the current index.
          * @param noCols The number of columns of the matrix
          * @param elements The elements to fill the matrix with. The index of the element and the 2D index of the element is passed as an argument.
@@ -167,7 +169,7 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
 
             var count = 0
             return Matrix(Array(noRows * noCols) {
-                val pair = Matrix.convertIndexTo2d(count, noCols)
+                val pair = convertIndexTo2d(count, noCols)
                 elements(count++, pair)
             }, noRows, noCols)
         }
@@ -175,7 +177,7 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
         /**
          * Returns a new zero matrix of type [Int] thats of the size [noRows] x [noCols].
          * To get the zero matrix of other types use [matrixOf] with element that returns 0 of that type.
-         * Or use [Matrix] type converters. Like [Matrix.toIntMatrix] or [Matrix.toDoubleMatrix] etc.
+         * Or use [matrix] type converters. Like [matrix.toIntMatrix] or [matrix.toDoubleMatrix] etc.
          * @param noRows The number of rows of the matrix.
          * @param noCols The number of columns of the matrix.
          * @return A matrix with all elements as 0 (Int).
@@ -211,7 +213,7 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
 
         /**
          * Generates a square matrix of size [size] which in the shape of an upper trainagle. The upper half is filled with [primary] and the lower is filled with [secondary]
-         * @param size The size of the Matrix
+         * @param size The size of the Matrix.Matrix
          * @param primary The number to be filled up top
          * @param secondary The number to be filled at the bottom half
          * @return A square matrix of type [E]
@@ -222,14 +224,14 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
             if(primary.javaClass != secondary.javaClass)
                 throw MatrixError.TypeNotSame()
 
-            return Matrix.matrixOfIndexed(size, size) {_, (i,j) ->
+            return matrixOfIndexed(size, size) {_, (i,j) ->
                 if(i <= j) primary else secondary
             }
         }
 
         /**
          * Generates a square matrix of size [size] which in the shape of an lower trainagle. The lower half is filled with [primary] while the upper half is filled with [secondary]
-         * @param size The size of the Matrix
+         * @param size The size of the Matrix.Matrix
          * @param primary The number to be filled at the bottom half
          * @param secondary The number to be filled at the top half
          * @return A square matrix of type [E]
@@ -240,7 +242,7 @@ class Matrix<T : Number>(private val _m: Array<T>, val rows: Int, val cols: Int)
             if(primary.javaClass != secondary.javaClass)
                 throw MatrixError.TypeNotSame()
 
-            return Matrix.matrixOfIndexed(size, size) {_, (i,j) ->
+            return matrixOfIndexed(size, size) {_, (i,j) ->
                 if(i >= j) primary else secondary
             }
         }

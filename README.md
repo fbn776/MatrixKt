@@ -36,29 +36,29 @@ The main matrix code is in
 src
 |---main
     |---kotlin
-        |---Matrix.kt
+        |---matrix.matrix.kt
         |---MatrixOperatators.kt
         |---MatrixUtils.kt
-        |---MatrixError.kt
+        |---matrix.MatrixError.kt
         |---Test.kt
 ```
-`Matrix.kt` is the main file. It contains the actual matrix class.<br>
+`matrix.matrix.kt` is the main file. It contains the actual matrix class.<br>
 `MatrixOperatators.kt` contains the matrix operators code.<br>
 `MatrixUtils.kt` contains the utility functions to support the matrix class.<br>
-`MatrixError.kt` contains all the errors that the Matrix class can throw.<br>
+`matrix.MatrixError.kt` contains all the errors that the matrix.matrix class can throw.<br>
 `Test.kt` this is a temporary file, used for some minor testing.<br>
 
 ### Basic Usage
-All the matrix operations are done using the `Matrix` class. To create a matrix you can use the following;
+All the matrix operations are done using the `matrix.matrix` class. To create a matrix you can use the following;
 ```kotlin
-val matrix1 = Matrix(arrayOf(1,2,3,4), 2, 2)
+val matrix1 = matrix.matrix(arrayOf(1,2,3,4), 2, 2)
 ```
 This creates a 2x2 matrix of the form;
 ```
 1 2
 3 4
 ```
-The `Matrix` class takes in 3 parameters, all of which are required.<br>
+The `matrix.matrix` class takes in 3 parameters, all of which are required.<br>
 The first parameter is the values/elements of matrix itself. This is a 1D uniform `Array` with size of `rows * cols`<br>
 The second is the number of rows of the matrix.<br>
 The third is the number of columns of the matrix.<br>
@@ -90,14 +90,14 @@ println(matrix1)
 3 7
 */
 ```
-    Note: Matrix are mutable.
+    Note: matrix.matrix are mutable.
 
 ### Basic Operations
 For addition use `+`, for subtraction use `-`, for multiplication use `/`
 Example:
 ```kotlin
-val m1 = Matrix(arrayOf(1,2,3,4), 2, 2)
-val m2 = Matrix(arrayOf(5,6,7,8), 2, 2)
+val m1 = matrix.matrix(arrayOf(1,2,3,4), 2, 2)
+val m2 = matrix.matrix(arrayOf(5,6,7,8), 2, 2)
 
 val add = m1 + m2
 val sub = m1 - m2
