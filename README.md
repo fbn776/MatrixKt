@@ -41,18 +41,32 @@ Where `A` is a Matrix,
 	NOTE: The datatype of 'b' should be same as that of 'A'
 
 ### Basic Operations
-For addition use `+`, for subtraction use `-`, for multiplication use `/`
+You add, subtract, cross multiply two matrices. You can use `+`, `-` and `*` for the operations.
 Example:
 ```kotlin
-val m1 = matrix.matrix(arrayOf(1,2,3,4), 2, 2)
-val m2 = matrix.matrix(arrayOf(5,6,7,8), 2, 2)
+import matrix.Matrix
+import matrix.minus
+import matrix.plus
+import matrix.times
 
-val add = m1 + m2
-val sub = m1 - m2
-val mult = m1 * m3
-val scalarMult = 2 * m1
-val scalarDiv = m1 / 2
+val A = Matrix(arrayOf(
+    1,2,3,
+    4,5,6,
+    7,8,9
+), 3, 3)
+val B = Matrix(arrayOf(
+    4,3,1,
+    8,9,4,
+    1,3,5
+), 3, 3)
+
+val C = A + B
+val D = A - B
+val E = A * B
 ```
+Here `C` holds the matrix sum of `A` and `B`<br>
+`D` holds the matrix subtraction of `A` and `B`<br>
+`E` holds the matrix cross product between `A` and `B`
 
 Operations are as simple as this!
 

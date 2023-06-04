@@ -1,17 +1,23 @@
-import matrix.*
+import matrix.Matrix
+import matrix.minus
+import matrix.plus
+import matrix.times
 
 fun main() {
-    val x = arrayOf(1,2,3,4,5,6,7,8,9)
-    val m1 = Matrix(x, 3, 3)
+    val A = Matrix(arrayOf(
+        1,2,3,
+        4,5,6,
+        7,8,9
+    ), 3, 3)
+    val B = Matrix(arrayOf(
+        4,3,1,
+        8,9,4,
+        1,3,5
+    ), 3, 3)
 
-    val y = arrayOf(2,4,2,1,4,2,8,3,1)
-    val m2 = Matrix(y, 3, 3)
+    val C = A + B
+    val D = A - B
+    val E = A * B
 
-
-    val m3 = m1 + m2
-    val m4 = m1 - m2
-    val m5 = m1 * m2
-    val m6 = m1 / 6
-
-    print(m3)
+    println("C is $C\n D is $D\n E is $E")
 }
