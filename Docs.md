@@ -11,3 +11,5 @@ This enables you to write concise and easier to understand code.
 ### Utils
 `MatirxKt` provides a set of util functions. This enables you as a user to extend the libraries existing functions and create more matrix related stuff on top.
 
+### Errors
+The library throw custom exceptions for different errors.
