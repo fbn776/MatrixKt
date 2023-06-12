@@ -13,3 +13,6 @@ This enables you to write concise and easier to understand code.
 
 ### Errors
 The library throw custom exceptions for different errors.
+
+### Additional note
+While creating this library, I faced multiple issues. Some of those issues were hard to fix, some which i had to totally go around and many others
