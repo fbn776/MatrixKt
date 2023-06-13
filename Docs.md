@@ -7,6 +7,8 @@ For getting started see [readme](./README.md).
 MatrixKt also uses Kotlin's syntax systems to its advantage. `MatrixKt`'s operators extend the default operators like `+`, `-`, `*`, `/` etc.
 This enables you to write concise and easier to understand code.
 
+For using this use the import statement;
+`import Matrix.plus`
 
 ### Utils
 `MatirxKt` provides a set of util functions. This enables you as a user to extend the libraries existing functions and create more matrix related stuff on top.
