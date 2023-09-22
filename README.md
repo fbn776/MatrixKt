@@ -2,8 +2,10 @@
 
 ## Introduction
 
-MatrixKt is a maths library for using matrices and matrix operations in Kotlin.
-The documentation is available at ./docs.md
+MatrixKt is a maths library that enables the use of matrices and matrix operations in Kotlin.
+The documentations are available at [Docs.md](./Docs.md). 
+
+		This is a hobby project and needs some more documentations. The code is almost complete, but lacks documentations
 
 ## Features
 
@@ -61,18 +63,25 @@ val B = Matrix(arrayOf(
     1,3,5
 ), 3, 3)
 
+//Addition
 val C = A + B
+//Subraction
 val D = A - B
+//Multiplication
 val E = A * B
 ```
 Here `C` holds the matrix sum of `A` and `B`<br>
 `D` holds the matrix subtraction of `A` and `B`<br>
 `E` holds the matrix cross product between `A` and `B`
 
-Operations are as simple as this!
+Operations are as simple as that!
 
 You can also do stuff like finding the transpose, minor matrix, cofactor, adjoint, determinant, row and column transforms, rank etc.
 
 For the full docs read [here](./Docs.md)
 
+## TODO
 
+- [ ] Documentation
+- [ ] Testings
+- [ ] Publications
