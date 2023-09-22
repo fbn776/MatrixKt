@@ -1,22 +1,21 @@
 # MatrixKt
 
-# Needs more documentation. 
+## Introduction
 
-### Introduction
 MatrixKt is a maths library for using matrices and matrix operations in Kotlin.
 The documentation is available at ./docs.md
 
-### Features
-This library supports almost all the basics matrix operations like: 
+## Features
 
-
+This library supports almost all the basics matrix operations like: <br>
 `Addition`, `Subtraction`, `Multiplication`, `Scalar Multiplication`,` Negation`, `Transpose`, `Determinant`, `Inverse`, `Minors`, `Cofactors`, `Adjoint`, `Echelon forms`, `Rank`
 
 The library also provide util function like:
 
 `Individual row/column getters`, `Row/column transforms`, `Row/column swapping`, `Iterators`, `forEach`, `forEachIndexed` etc...
 
-### Basic Usage
+## Basic Usage
+
 All the matrix operations are done using the `Matrix` class.
 To create a matrix, use the following code;
 ```kotlin
@@ -30,19 +29,19 @@ val A = Matrix(arrayOf(
 This creates a 2x2 matrix.
 
 ### Accessing elements
+
 For accessing the element at `(i,j)` use `A[i,j]`<br>
 Where `A` is a Matrix.
 
 	NOTE: indices start from 0.
 
-The matrix generated is also mutable. You set a value of the element at `(i,j)` by
+The matrix generated is also mutable. You can update/set value at `(i,j)` by using
 `A[i,j] = b`<br>
-Where `A` is a Matrix, 
+Where `A` is a Matrix instance, 
 `b` is `Number`
 
-	NOTE: The datatype of 'b' should be same as that of 'A'
+## Basic Operations
 
-### Basic Operations
 You add, subtract, cross multiply two matrices. You can use `+`, `-` and `*` for the operations.
 Example:
 ```kotlin
@@ -74,6 +73,6 @@ Operations are as simple as this!
 
 You can also do stuff like finding the transpose, minor matrix, cofactor, adjoint, determinant, row and column transforms, rank etc.
 
-For the full docs read [this](./Docs.md)
+For the full docs read [here](./Docs.md)
 
 
